@@ -18,6 +18,8 @@
         type="password"
         id="password"
         placeholder="Password"
+        pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$"
+        title="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico"
       />
       <label class="form-label" for="#password-repeat"></label>
       <input
@@ -27,6 +29,7 @@
         id="password-repeat"
         placeholder="Password"
       />
+      <p v-if="error" class="error">{{ message }}</p>
       <input class="form-submit" type="submit" value="Sign Up" />
     </form>
   </div>
@@ -38,16 +41,35 @@ export default {
   data: () => ({
     email: "",
     password: "",
-    passwordRepeat: ""
+    passwordRepeat: "",
+    error: false,
+    message: "",
   }),
   methods: {
     async register() {
-      auth.register(this.email, this.password)
-      .then(response => {
-        console.log(response);
-      }).catch(e =>{
-        console.log(e)
-      });
+      this.$session.start();
+      if (this.password == this.passwordRepeat) {
+        auth
+          .register(this.email, this.password)
+          .then(response => {
+            console.log(response.data.token)
+            this.$session.set("token", response.data.token)
+            console.log(this.$session.get("token"))
+            this.$router.push("/")
+          })
+          .catch(e => {
+            console.log(e);
+            if (e.response.status == 400) {
+              this.error = true
+              this.message = "El correo ya está en uso."
+              console.log(this.error)
+            }
+          });
+      } else {
+        this.error = true;
+        this.message = "Las contraseñas no coinciden."
+        console.log(this.error)
+      }
     }
   }
 };

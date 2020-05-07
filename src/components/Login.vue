@@ -28,17 +28,16 @@
 <script>
 import auth from "@/login/auth";
 export default {
-  el: "cm_login",
   data: () => ({
     email: "",
     password: "",
     error: false
   }),
   mounted() {
-    console.log(this.$session.getAll())
-    if(this.$session.get("token")){
-      this.$router.push("/")
-      this.$session.remove("token")
+    console.log(this.$session.getAll());
+    if (this.$session.get("token")) {
+      this.$router.push("/");
+      this.$session.remove("token");
     }
   },
   methods: {
@@ -46,17 +45,19 @@ export default {
       auth
         .login(this.email, this.password)
         .then(response => {
-          this.$session.start()
-          console.log(response.data.token);
-          this.error = false;
-          this.$session.set("token",response.data.token);
-          console.log("Valor de la sesion: ",this.$session.getAll());
+          this.$session.start();
+          if (this.error) {
+            this.error = false;
+          }
+          this.$session.set("token", response.data.token);
+          console.log("Valor de la sesion: ", this.$session.get("token"));
+          this.$router.push("/")
         })
         .catch(error => {
           console.log(error);
-          /*if (error.response.status == 403) {
+          if (error.response.status == 403) {
             this.error = true;
-          }*/
+          }
         });
     }
   }

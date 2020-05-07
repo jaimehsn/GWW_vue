@@ -1,16 +1,23 @@
 <template>
   <div class="hello">
-    <img src="@/assets/logo.png" alt="">
+    <img src="@/assets/logo.png" alt />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Main',
+  name: "Main",
   props: {
     msg: String
+  },
+  mounted() {
+    if (this.$session.get("token")) {
+      console.log("OK");
+    } else {
+      console.log("NO");
+    }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
