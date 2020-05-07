@@ -51,6 +51,19 @@
     background: #31d843;
   }
 }
+.register-buttom {
+  background: #31d843;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  margin-top: 3rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: #31d843;
+  }
+}
 .error {
   margin: 1rem 0 0;
   color: #d00000;

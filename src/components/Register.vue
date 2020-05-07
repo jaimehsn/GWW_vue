@@ -1,6 +1,7 @@
 <template>
   <div class="register">
-    <h1 class="title">Sign Up</h1>
+    <div><h1 class="title">Sign Up</h1></div>
+    <img src="@/assets/svgs/times.svg" alt="times" height="50px" v-on:click="emiter()"/>
     <form action class="form" @submit.prevent="register">
       <label class="form-label" for="#email"></label>
       <input
@@ -32,6 +33,7 @@
       <p v-if="error" class="error">{{ message }}</p>
       <input class="form-submit" type="submit" value="Sign Up" />
     </form>
+    <button class="form-submit" >Close</button>
   </div>
 </template>
 
@@ -70,6 +72,9 @@ export default {
         this.message = "Las contraseñas no coinciden."
         console.log(this.error)
       }
+    },
+    emiter(){
+      this.$emit("exit")
     }
   }
 };

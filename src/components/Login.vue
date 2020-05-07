@@ -19,19 +19,31 @@
         id="password"
         placeholder="Password"
       />
-      <p v-if="error" class="error">Has introducido mal el email o la contraseña.</p>
+      <p v-if="error" class="error">
+        Email o Contraseña incorrectas.
+      </p>
       <input class="form-submit" type="submit" value="Login" />
     </form>
+    <button class="register-buttom" v-on:click="show()">Register</button>
+    <modal name="register-modal" height="auto" :scrollable="true">
+      <com-register @exit="hide()"/>
+    </modal>
   </div>
 </template>
 
 <script>
 import auth from "@/login/auth";
+import Register from "@/components/Register";
 export default {
+  components: {
+    "com-register": Register,
+  },
   data: () => ({
     email: "",
     password: "",
-    error: false
+    error: false,
+    message: "",
+    shoWmodal: false,
   }),
   mounted() {
     console.log(this.$session.getAll());
@@ -44,26 +56,33 @@ export default {
     async login() {
       auth
         .login(this.email, this.password)
-        .then(response => {
+        .then((response) => {
           this.$session.start();
           if (this.error) {
             this.error = false;
           }
           this.$session.set("token", response.data.token);
           console.log("Valor de la sesion: ", this.$session.get("token"));
-          this.$router.push("/")
+          this.$router.push("/");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-          if (error.response.status == 403) {
+          if (error.response.status == 403 || error.response.status == 404) {
             this.error = true;
           }
         });
-    }
-  }
+    },
+    show() {
+      this.$modal.show("register-modal");
+    },
+    hide() {
+      this.$modal.hide("register-modal");
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/css/login";
+
 </style>
