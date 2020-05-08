@@ -31,7 +31,7 @@
   background: none;
   background-image: none;
   border: 1px solid #cdd7d6;
-  border-radius: 4px;
+  border-radius: 3px;
   color: #102542;
   &:focus {
     outline: 0;
@@ -41,7 +41,7 @@
 .form-submit {
   background: #31d843;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   color: white;
   margin-top: 3rem;
   padding: 1rem 0;
@@ -54,7 +54,7 @@
 .register-buttom {
   background: #31d843;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   color: white;
   margin-top: 3rem;
   padding: 1rem 0;
@@ -67,4 +67,18 @@
 .error {
   margin: 1rem 0 0;
   color: #d00000;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #F87060;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ color: #F87060;
+ opacity: 1 /* esto es porque Firefox le reduce la opacidad por defecto */;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+ color: #F87060;
+ opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: #F87060;
 }

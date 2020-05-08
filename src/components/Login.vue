@@ -34,6 +34,7 @@
 <script>
 import auth from "@/login/auth";
 import Register from "@/components/Register";
+import bus from "@/bus"
 export default {
   components: {
     "com-register": Register,
@@ -63,6 +64,7 @@ export default {
           }
           this.$session.set("token", response.data.token);
           console.log("Valor de la sesion: ", this.$session.get("token"));
+          bus.$emit("login", true)
           this.$router.push("/");
         })
         .catch((error) => {

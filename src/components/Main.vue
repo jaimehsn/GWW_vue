@@ -11,12 +11,12 @@ export default {
     msg: String
   },
   mounted() {
-    if (this.$session.get("token")) {
-      console.log("OK");
-    } else {
-      console.log("NO");
+    
+    if(!this.$session.get("token")){
+      this.$router.push("/login")
     }
   }
+  
 };
 </script>
 

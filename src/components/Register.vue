@@ -1,7 +1,18 @@
 <template>
   <div class="register">
-    <div><h1 class="title">Sign Up</h1></div>
-    <img src="@/assets/svgs/times.svg" alt="times" height="50px" v-on:click="emiter()"/>
+    <div class="container">
+      <div class="item">
+        <h1 class="title">Sign Up</h1>
+      </div>
+      <div class="item">
+        <img
+          src="@/assets/svgs/times.svg"
+          alt="times"
+          height="50px"
+          v-on:click="emiter()"
+        />
+      </div>
+    </div>
     <form action class="form" @submit.prevent="register">
       <label class="form-label" for="#email"></label>
       <input
@@ -33,7 +44,6 @@
       <p v-if="error" class="error">{{ message }}</p>
       <input class="form-submit" type="submit" value="Sign Up" />
     </form>
-    <button class="form-submit" >Close</button>
   </div>
 </template>
 
@@ -49,40 +59,49 @@ export default {
   }),
   methods: {
     async register() {
-      this.$session.start();
       if (this.password == this.passwordRepeat) {
         auth
           .register(this.email, this.password)
-          .then(response => {
-            console.log(response.data.token)
-            this.$session.set("token", response.data.token)
-            console.log(this.$session.get("token"))
-            this.$router.push("/")
+          .then((response) => {
+            console.log(response.data.token);
+            this.$session.set("token", response.data.token);
+            console.log(this.$session.get("token"));
+            this.$router.push("/");
           })
-          .catch(e => {
+          .catch((e) => {
             console.log(e);
             if (e.response.status == 400) {
-              this.error = true
-              this.message = "El correo ya está en uso."
-              console.log(this.error)
+              this.error = true;
+              this.message = "El correo ya está en uso.";
+              console.log(this.error);
             }
           });
       } else {
         this.error = true;
-        this.message = "Las contraseñas no coinciden."
-        console.log(this.error)
+        this.message = "Las contraseñas no coinciden.";
+        console.log(this.error);
       }
     },
-    emiter(){
-      this.$emit("exit")
-    }
-  }
+    emiter() {
+      this.$emit("exit");
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.login {
+.register {
   padding: 2rem;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+
+}
+.item{
+  flex-grow: 3;
 }
 .title {
   text-align: center;
@@ -114,7 +133,7 @@ export default {
   background: none;
   background-image: none;
   border: 1px solid #cdd7d6;
-  border-radius: 4px;
+  border-radius: 3px;
   color: #102542;
   &:focus {
     outline: 0;
@@ -124,7 +143,7 @@ export default {
 .form-submit {
   background: #31d843;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   color: white;
   margin-top: 3rem;
   padding: 1rem 0;
