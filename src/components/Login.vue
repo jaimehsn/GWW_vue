@@ -24,21 +24,15 @@
       </p>
       <input class="form-submit" type="submit" value="Login" />
     </form>
-    <button class="register-buttom" v-on:click="show()">Register</button>
-    <modal name="register-modal" height="auto" :scrollable="true">
-      <com-register @exit="hide()"/>
-    </modal>
+    
   </div>
 </template>
 
 <script>
 import auth from "@/login/auth";
-import Register from "@/components/Register";
 import bus from "@/bus"
 export default {
-  components: {
-    "com-register": Register,
-  },
+  
   data: () => ({
     email: "",
     password: "",
@@ -47,10 +41,9 @@ export default {
     shoWmodal: false,
   }),
   mounted() {
-    console.log(this.$session.getAll());
+    console.log(this.$session.get("token"));
     if (this.$session.get("token")) {
       this.$router.push("/");
-      this.$session.remove("token");
     }
   },
   methods: {
@@ -63,7 +56,7 @@ export default {
             this.error = false;
           }
           this.$session.set("token", response.data.token);
-          console.log("Valor de la sesion: ", this.$session.get("token"));
+          //console.log("Valor de la sesion: ", this.$session.get("token"));
           bus.$emit("login", true)
           this.$router.push("/");
         })
@@ -74,12 +67,7 @@ export default {
           }
         });
     },
-    show() {
-      this.$modal.show("register-modal");
-    },
-    hide() {
-      this.$modal.hide("register-modal");
-    },
+    
   },
 };
 </script>

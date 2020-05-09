@@ -26,7 +26,8 @@ body {
   margin: 0px;
   padding: 0px;
   background: linear-gradient(-45deg, #cdd7d6, #ffffff);
-  background-size: 200% 200%;
+  background-size: 400% 400%;
+  
 }
 
 #app {

@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
-    <img src="@/assets/logo.png" alt />
+    <div>
+      <img src="@/assets/logo.png" />
+    </div>
   </div>
 </template>
 
@@ -11,17 +13,26 @@ export default {
     msg: String
   },
   mounted() {
-    
-    if(!this.$session.get("token")){
-      this.$router.push("/login")
+    console.log("Valor de la sesion: ", this.$session.get("token"));
+    if (!this.$session.get("token")) {
+      this.$router.push("/login");
     }
   }
-  
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+.hello {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hello div{
+  height: 200px;
+  width: 200px;
+}
+
 h3 {
   margin: 40px 0 0;
 }
