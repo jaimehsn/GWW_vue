@@ -1,9 +1,10 @@
 <template>
+
   <header>
     <nav>
       <ul class="container">
         <li class="option">
-          <img src="@/assets/svgs/bars.svg" alt="Menu" height="25px" />
+          <img src="@/assets/svgs/bars.svg" alt="Menu" height="25px" v-on:click="sidebar()" />
         </li>
         <li v-if="loged" class="search">
           <div  class="input-icono">
@@ -60,6 +61,9 @@ export default {
     hide() {
       this.$modal.hide("register-modal");
     },
+    sidebar(){
+      bus.$emit("sidebar")
+    }
   }
 };
 </script>

@@ -1,19 +1,25 @@
 <template>
   <div class="hello">
-    <div>
-      <img src="@/assets/logo.png" />
-    </div>
+    <sidebar/>
   </div>
 </template>
 
 <script>
+import SideBar from '@/components/Sidebar'
 export default {
   name: "Main",
+  data: () =>({
+    info: {},
+  }),
+  components: {
+    "sidebar": SideBar,
+  },
   props: {
     msg: String
   },
   mounted() {
     console.log("Valor de la sesion: ", this.$session.get("token"));
+    this.info = this.$jwtDec.decode(this.$session.get("token"))
     if (!this.$session.get("token")) {
       this.$router.push("/login");
     }

@@ -66,6 +66,7 @@ export default {
             console.log(response.data.token);
             this.$session.set("token", response.data.token);
             console.log(this.$session.get("token"));
+            this.emiter()
             this.$router.push("/");
           })
           .catch((e) => {
@@ -83,6 +84,7 @@ export default {
       }
     },
     emiter() {
+      this.$emit("login", true)
       this.$emit("exit");
     },
   },
