@@ -1,5 +1,7 @@
 import axios from "axios";
 import qs from "querystring"
+axios.defaults.headers.common['Authorization'] = "AUTH_TOKEN";
+
 
 const ENDPOINT_PATH = "http://localhost:9000/api/";
 
@@ -9,11 +11,11 @@ export default {
             email,
             password
         })
-        const config = {
+        const config = qs.stringify({
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
             }
-        }
+        })
         return axios.post(ENDPOINT_PATH + "users", user,
         config,
         );

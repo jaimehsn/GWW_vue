@@ -49,6 +49,7 @@
 
 <script>
 import auth from "@/login/auth";
+import bus from "@/bus"
 export default {
   data: () => ({
     email: "",
@@ -84,8 +85,8 @@ export default {
       }
     },
     emiter() {
-      this.$emit("login", true)
-      this.$emit("exit");
+      bus.$emit("login", true)
+      this.$emit("exit")
     },
   },
 };

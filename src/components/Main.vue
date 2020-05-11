@@ -1,25 +1,25 @@
 <template>
-  <div class="hello">
-    <sidebar/>
+  <div>
+    <sidebar />
+    <h1>{{info.sub}}</h1>
   </div>
 </template>
 
 <script>
-import SideBar from '@/components/Sidebar'
+import SideBar from "@/components/Sidebar";
 export default {
   name: "Main",
-  data: () =>({
-    info: {},
+  data: () => ({
+    info: {}
   }),
   components: {
-    "sidebar": SideBar,
+    sidebar: SideBar
   },
   props: {
     msg: String
   },
   mounted() {
     console.log("Valor de la sesion: ", this.$session.get("token"));
-    this.info = this.$jwtDec.decode(this.$session.get("token"))
     if (!this.$session.get("token")) {
       this.$router.push("/login");
     }
@@ -34,7 +34,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.hello div{
+.hello div {
   height: 200px;
   width: 200px;
 }

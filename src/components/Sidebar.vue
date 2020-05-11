@@ -1,36 +1,55 @@
 <template>
   <div>
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" v-on:click="depliegue()">&times;</a>
+      <div class="top">
+        <div>
+          <img src="@/assets/svgs/users.svg" alt height="40px" />
+        </div>
+        <div>
+          <h1>Groups</h1>
+        </div>
+        <div>
+          <img src="@/assets/svgs/times.svg" alt v-on:click="depliegue()" height="40px" />
+        </div>
+      </div>
       <a href="#">About</a>
       <a href="#">Services</a>
       <a href="#">Clients</a>
       <a href="#">Contact</a>
+      <div class="bot" v-on:click="depliegue()">
+        <img src="@/assets/svgs/plus-circle.svg" alt height="40px" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import bus from "@/bus"
+import bus from "@/bus";
+import api from "@/api";
 export default {
   data: () => ({
-    sidebar: false,
+    sidebar: false
   }),
-  mounted(){
-    bus.$on("sidebar", () =>{
-        if(!this.sidebar){
-            document.getElementById("mySidenav").style.width = "300px";
-            this.sidebar = true
-        }else{
-            document.getElementById("mySidenav").style.width = "0";
-            this.sidebar = false
-        }
-    })
+  mounted() {
+    console.log("From Sidebar componente:", this.$session.get("token"));
+    bus.$on("sidebar", () => {
+      if (!this.sidebar) {
+        document.getElementById("mySidenav").style.width = "300px";
+        this.sidebar = true;
+        this.getGroups();
+      } else {
+        document.getElementById("mySidenav").style.width = "0";
+        this.sidebar = false;
+      }
+    });
   },
   methods: {
-      depliegue(){
-          bus.$emit("sidebar")
-      }
+    depliegue() {
+      bus.$emit("sidebar");
+    },
+    async getGroups() {
+      api.findAllGroups(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token"));
+    }
   }
 };
 </script>
@@ -43,10 +62,26 @@ export default {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #fff;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+}
+.top {
+  display: flex;
+  color: #102542;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #b3a394;
+}
+.bot {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0px;
+  justify-content: space-evenly;
+  background-color: #cdd7d6;
+  position: absolute;
+  bottom: 0px;
 }
 
 .sidenav a {

@@ -22,7 +22,7 @@
       <p v-if="error" class="error">
         Email o Contraseña incorrectas.
       </p>
-      <input class="form-submit" type="submit" value="Login" />
+      <input class="form-submit" type="submit" value="Login" v-on:keyup.enter="login()" />
     </form>
     
   </div>
