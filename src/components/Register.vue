@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <div class="container">
+    <div class="container-register">
       <div class="item">
         <h1 class="title">Sign Up</h1>
       </div>
@@ -9,7 +9,7 @@
           src="@/assets/svgs/times.svg"
           alt="times"
           height="50px"
-          v-on:click="emiter()"
+          v-on:click="emiter(false)"
         />
       </div>
     </div>
@@ -67,7 +67,7 @@ export default {
             console.log(response.data.token);
             this.$session.set("token", response.data.token);
             console.log(this.$session.get("token"));
-            this.emiter()
+            this.emiter(true)
             this.$router.push("/");
           })
           .catch((e) => {
@@ -84,8 +84,8 @@ export default {
         console.log(this.error);
       }
     },
-    emiter() {
-      bus.$emit("login", true)
+    emiter(permisos) {
+      bus.$emit("login", permisos)
       this.$emit("exit")
     },
   },
@@ -96,7 +96,7 @@ export default {
 .register {
   padding: 2rem;
 }
-.container {
+.container-register {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;

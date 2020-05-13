@@ -6,6 +6,7 @@ import qs from "querystring"
 const ENDPOINT_PATH = "http://localhost:9000/api/";
 
 export default {
+    
     findAllGroups(email,token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
@@ -18,28 +19,27 @@ export default {
                 'custom-header':'custom-header'
             }
         })
-        axios.get(ENDPOINT_PATH + "listGroups", datas, config)
+        return axios.get(ENDPOINT_PATH + "listGroups", datas, config)
             .then((response) => {
-                console.log("Response from API Rest:", response)
-                return response
+                console.log("Response from API Rest FIND ALL GROUPS:", response.data)
+                return response.data
             }).catch((error) => {
                 console.log("ERROR MESSAGE:", error.response.message)
-                return error;
+                return error.response.message
             });
+        
     },
 
-    login(email, password) {
-        const user = qs.stringify({
-            email,
-            password
-        })
-        const config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }
-        return axios.get(ENDPOINT_PATH + "auth", user,
-            config,
-        );
+    userInfo(email, token) {
+        axios.defaults.headers.common['Authorization'] = token;
+
+        return axios.get(ENDPOINT_PATH + "users/" + email )
+            .then((response) => {
+                console.log("Response from API Rest USER INFO:", response.data)
+                return response.data
+            }).catch((error) => {
+                console.log("ERROR MESSAGE:", error.response.message)
+                return error.response.message
+            });
     }
 };

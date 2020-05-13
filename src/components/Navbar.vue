@@ -17,15 +17,18 @@
           </div>
         </li>
         <li class="option">
-          <img v-if="loged" src="@/assets/svgs/user-circle.svg" alt="Menu" height="25px" />
-          <img v-else src="@/assets/svgs/user-plus.svg" v-on:click="show()" alt="Menu" height="25px" />
+          <img v-if="loged" src="@/assets/svgs/user-circle.svg" alt="Menu" height="25px" v-on:click="show('profile-modal')"/>
+          <img v-else src="@/assets/svgs/user-plus.svg" v-on:click="show('register-modal')" alt="Menu" height="25px" />
           <img src="@/assets/svgs/cog.svg" alt="Menu" height="25px" />
           <img v-if="loged" v-on:click="logout()" src="@/assets/svgs/sign-out-alt.svg" alt="Menu" height="25px" />
         </li>
       </ul>
     </nav>
     <modal name="register-modal" height="auto" :scrollable="true">
-      <com-register @exit="hide()"/>
+      <com-register @exit="hide('register-modal')"/>
+    </modal>
+    <modal name="profile-modal" height="auto" :scrollable="true">
+      <com-profile @exit="hide('profile-modal')"/>
     </modal>
   </header>
 </template>
@@ -33,10 +36,12 @@
 <script>
 import bus from "@/bus";
 import Register from "@/components/Register";
+import Profile from "@/components/Profile";
 export default {
   name: "Navbar", //this is the name of the component
   components: {
     "com-register": Register,
+    "com-profile": Profile,
   },
   data: () => ({
     loged: false
@@ -55,11 +60,11 @@ export default {
       this.$router.push("/login")
       bus.$emit("login", false)
     },
-    show() {
-      this.$modal.show("register-modal");
+    show(modal_name) {
+      this.$modal.show(modal_name);
     },
-    hide() {
-      this.$modal.hide("register-modal");
+    hide(modal_name) {
+      this.$modal.hide(modal_name);
     },
     sidebar(){
       bus.$emit("sidebar")

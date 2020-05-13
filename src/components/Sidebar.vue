@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="mySidenav" class="sidenav">
+    <div id="mySidenav" class="sidenav" ref="sidebar">
       <div class="top">
         <div>
           <img src="@/assets/svgs/users.svg" alt height="40px" />
@@ -12,10 +12,15 @@
           <img src="@/assets/svgs/times.svg" alt v-on:click="depliegue()" height="40px" />
         </div>
       </div>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <div>
+        <div v-if="groups.length == 0">
+          <a href>...</a>
+        </div>
+        <div v-else v-for="group in groups" :key="group.id">
+          <a>{{nameComp(group.groupModel.name)}}</a>
+        </div>
+      </div>
+
       <div class="bot" v-on:click="depliegue()">
         <img src="@/assets/svgs/plus-circle.svg" alt height="40px" />
       </div>
@@ -28,7 +33,8 @@ import bus from "@/bus";
 import api from "@/api";
 export default {
   data: () => ({
-    sidebar: false
+    sidebar: false,
+    groups: []
   }),
   mounted() {
     console.log("From Sidebar componente:", this.$session.get("token"));
@@ -48,7 +54,19 @@ export default {
       bus.$emit("sidebar");
     },
     async getGroups() {
-      api.findAllGroups(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token"));
+      //console.log("GerGroups: ", await api.findAllGroups(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token")));
+      this.groups = await api.findAllGroups(
+        this.$jwtDec.decode(this.$session.get("token")).sub,
+        this.$session.get("token")
+      );
+      console.log(this.groups);
+    },
+    nameComp(name){
+      if(name.length >= 24){
+        return name.substring(0,11) + "..."
+      }else{
+        return name
+      }
     }
   }
 };
@@ -85,24 +103,16 @@ export default {
 }
 
 .sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 10px 0px;
   text-decoration: none;
+  width:300px;
   font-size: 25px;
-  color: #818181;
+  color: #f87060;
   display: block;
   transition: 0.3s;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
+  &:hover {
+    background-color: #cdd7d6;
+  }
 }
 
 @media screen and (max-height: 450px) {
