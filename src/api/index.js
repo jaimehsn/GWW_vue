@@ -41,5 +41,19 @@ export default {
                 console.log("ERROR MESSAGE:", error.response.message)
                 return error.response.message
             });
+    },
+
+    updateInfo(email,token,name,lastname,phone,category){
+        axios.defaults.headers.common['Authorization'] = token;
+        const user = qs.stringify({
+            name,
+            lastname,
+            phone,
+            category
+        })
+        return axios.put(ENDPOINT_PATH + "users/" + email, user,
+        );
     }
+
+
 };

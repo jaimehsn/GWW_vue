@@ -27,7 +27,7 @@
     <modal name="register-modal" height="auto" :scrollable="true">
       <com-register @exit="hide('register-modal')"/>
     </modal>
-    <modal name="profile-modal" height="auto" :scrollable="true">
+    <modal name="profile-modal" height="auto" :scrollable="true" >
       <com-profile @exit="hide('profile-modal')"/>
     </modal>
   </header>

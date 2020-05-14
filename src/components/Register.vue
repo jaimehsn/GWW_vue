@@ -14,7 +14,7 @@
       </div>
     </div>
     <form action class="form" @submit.prevent="register">
-      <label class="form-label" for="#email"></label>
+      <label class="form-label-register" for="#email"></label>
       <input
         v-model="email"
         class="form-input"
@@ -23,7 +23,7 @@
         required
         placeholder="Email"
       />
-      <label class="form-label" for="#password"></label>
+      <label class="form-label-register" for="#password"></label>
       <input
         v-model="password"
         class="form-input"
@@ -33,7 +33,7 @@
         pattern="^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$"
         title="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico"
       />
-      <label class="form-label" for="#password-repeat"></label>
+      <label class="form-label-register" for="#password-repeat"></label>
       <input
         v-model="passwordRepeat"
         class="form-input"
@@ -122,7 +122,7 @@ export default {
   border-color: #cdd7d6;
   padding: 40px;
 }
-.form-label {
+.form-label-register {
   margin-top: 2rem;
   color: #cdd7d6;
   margin-bottom: 0.5rem;

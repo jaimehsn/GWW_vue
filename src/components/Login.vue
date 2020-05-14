@@ -2,7 +2,7 @@
   <div class="login">
     <h1 class="title">Login</h1>
     <form action class="form" @submit.prevent="login">
-      <label class="form-label" for="#email"></label>
+      <label class="form-label-login" for="#email"></label>
       <input
         v-model="email"
         class="form-input"
@@ -11,7 +11,7 @@
         required
         placeholder="Email"
       />
-      <label class="form-label" for="#password"></label>
+      <label class="form-label-login" for="#password"></label>
       <input
         v-model="password"
         class="form-input"

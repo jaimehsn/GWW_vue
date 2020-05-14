@@ -3,28 +3,77 @@
     <div class="container-profile">
       <div class="form-header">
         <div>
-          <h1 class="title">Sign Up</h1>
+          <h1 class="title">Profile</h1>
         </div>
         <div>
-          <img src="@/assets/svgs/times.svg" alt="times" height="50px" />
+          <img
+            v-if="editMode"
+            src="@/assets/svgs/check.svg"
+            alt="times"
+            height="45px"
+            width="35"
+            style="padding: 0px 5px"
+            v-on:click="sendInfo()"
+          />
+          <img
+            v-if="!editMode"
+            src="@/assets/svgs/pen.svg"
+            alt="times"
+            height="33px"
+            width="35"
+            style="padding: 5px 5px"
+            v-on:click="editMode = !editMode"
+          />
+          <img src="@/assets/svgs/times.svg" alt="times" height="45px" width="35" v-on:click="$emit('exit')"/>
         </div>
       </div>
-      <div class="form">
-        <form action method="post">
-          <div>
+      <form action method="put" @submit.prevent="sendInfo()">
+        <div class="form">
+          <div class="labels">
             <label class="form-label" for="#email">Email</label>
-            <input class="form-input" id="email" />
-          </div>
-          <div>
             <label class="form-label" for="#name">Name</label>
-            <input class="form-input" type="email" id="name" />
+            <label class="form-label" for="#lastname">Lastname</label>
+            <label class="form-label" for="#phone">Phone</label>
+            <label class="form-label" for="#category">Category</label>
           </div>
-          <div>
-            <label class="form-label" for="#name">Lastname</label>
-            <input class="form-input" type="lastname" id="lastname" />
+          <div class="inputs">
+            <input class="form-input" id="email" v-bind:placeholder="email" disabled />
+            <input
+              class="form-input"
+              type="text"
+              id="name"
+              v-model="name"
+              :v-bind:placeholder="name"
+              :disabled="!editMode"
+            />
+            <input
+              class="form-input"
+              type="text"
+              id="lastname"
+              v-model="lastname"
+              :v-bind:placeholder="lastname"
+              :disabled="!editMode"
+            />
+            <input
+              class="form-input"
+              type="tel"
+              id="phone"
+              v-model="phone"
+              :v-bind:placeholder="phone"
+              :disabled="!editMode"
+            />
+            <input
+              class="form-input"
+              type="text"
+              id="category"
+              v-model="category"
+              :v-bind:placeholder="category"
+              :disabled="!editMode"
+            />
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
+      <p v-if="error" class="error">Se ha produciodo un error, intente lo de nuevo más tarde.</p>
     </div>
   </div>
 </template>
@@ -33,16 +82,43 @@
 import api from "@/api";
 export default {
   data: () => ({
-    info: {}
+    info: [],
+    error: false,
+    editMode: false,
+    email: "",
+    name: "",
+    lastname: "",
+    category: "",
+    phone: ""
   }),
+  mounted() {
+    this.getUserInfo();
+  },
   methods: {
     async getUserInfo() {
-      this.info = await api.getUserInfo(
+      this.info = await api.userInfo(
         this.$jwtDec.decode(this.$session.get("token")).sub,
         this.$session.get("token")
       );
       console.log(this.info);
-    }
+        this.email = this.info[0].email;
+        this.name = this.info[0].name;
+        this.lastname = this.info[0].lastname;
+        this.phone = this.info[0].phone;
+        this.category = this.info[0].category;
+    },
+    async sendInfo() {
+      api
+        .updateInfo(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token"),this.name,this.lastname,this.phone,this.category)
+        .then((response) => {
+          console.log(response);
+          this.$emit('exit')
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    
   }
 };
 </script>
@@ -57,15 +133,22 @@ export default {
 }
 .title {
   text-align: center;
+  color: #102542;
 }
 .form {
   margin: 3rem auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   width: 20%;
   min-width: 350px;
   max-width: 100%;
+}
+.labels {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  color: #102542;
 }
 .form-header {
   width: 100%;
@@ -74,39 +157,32 @@ export default {
   justify-content: space-around;
 }
 .form-label {
-  margin-top: 2rem;
-  color: #cdd7d6;
-  margin-bottom: 0.5rem;
+  padding: 10px;
+  margin: 5px;
+  color: #102542;
+  font-weight: bold;
   &:first-of-type {
     margin-top: 0rem;
   }
 }
 .form-input {
   padding: 10px;
+  margin: 5px;
   text-align: center;
   background: none;
   background-image: none;
   border: 1px solid #cdd7d6;
   border-radius: 3px;
-  color: #102542;
+  color: #f87060;
   &:focus {
     outline: 0;
     border-color: #31d843;
   }
-}
-.form-submit {
-  background: #31d843;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  margin-top: 3rem;
-  padding: 1rem 0;
-  cursor: pointer;
-  transition: background 0.2s;
-  &:hover {
-    background: #31d843;
+  &::placeholder{
+    color: #f87060;
   }
 }
+
 .error {
   margin: 1rem 0 0;
   color: #d00000;
