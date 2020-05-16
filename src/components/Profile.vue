@@ -24,7 +24,13 @@
             style="padding: 5px 5px"
             v-on:click="editMode = !editMode"
           />
-          <img src="@/assets/svgs/times.svg" alt="times" height="45px" width="35" v-on:click="$emit('exit')"/>
+          <img
+            src="@/assets/svgs/times.svg"
+            alt="times"
+            height="45px"
+            width="35"
+            v-on:click="$emit('exit')"
+          />
         </div>
       </div>
       <form action method="put" @submit.prevent="sendInfo()">
@@ -45,6 +51,7 @@
               v-model="name"
               :v-bind:placeholder="name"
               :disabled="!editMode"
+              @focus="edited = true"
             />
             <input
               class="form-input"
@@ -53,6 +60,7 @@
               v-model="lastname"
               :v-bind:placeholder="lastname"
               :disabled="!editMode"
+              @focus="edited = true"
             />
             <input
               class="form-input"
@@ -61,6 +69,7 @@
               v-model="phone"
               :v-bind:placeholder="phone"
               :disabled="!editMode"
+              @focus="edited = true"
             />
             <input
               class="form-input"
@@ -69,6 +78,7 @@
               v-model="category"
               :v-bind:placeholder="category"
               :disabled="!editMode"
+              @focus="edited = true"
             />
           </div>
         </div>
@@ -85,6 +95,7 @@ export default {
     info: [],
     error: false,
     editMode: false,
+    edited: false,
     email: "",
     name: "",
     lastname: "",
@@ -101,29 +112,39 @@ export default {
         this.$session.get("token")
       );
       console.log(this.info);
-        this.email = this.info[0].email;
-        this.name = this.info[0].name;
-        this.lastname = this.info[0].lastname;
-        this.phone = this.info[0].phone;
-        this.category = this.info[0].category;
+      this.email = this.info[0].email;
+      this.name = this.info[0].name;
+      this.lastname = this.info[0].lastname;
+      this.phone = this.info[0].phone;
+      this.category = this.info[0].category;
     },
     async sendInfo() {
-      api
-        .updateInfo(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token"),this.name,this.lastname,this.phone,this.category)
-        .then((response) => {
-          console.log(response);
-          this.$emit('exit')
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    
+      if (this.edited) {
+        api
+          .updateInfo(
+            this.$jwtDec.decode(this.$session.get("token")).sub,
+            this.$session.get("token"),
+            this.name,
+            this.lastname,
+            this.phone,
+            this.category
+          )
+          .then(response => {
+            console.log(response);
+            this.$emit("exit");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }else{
+        this.editMode = false
+      }
+    }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 .container-profile {
   display: flex;
   flex-direction: column;
@@ -178,7 +199,7 @@ export default {
     outline: 0;
     border-color: #31d843;
   }
-  &::placeholder{
+  &::placeholder {
     color: #f87060;
   }
 }

@@ -20,7 +20,7 @@
           <img v-if="loged" src="@/assets/svgs/user-circle.svg" alt="Menu" height="25px" v-on:click="show('profile-modal')"/>
           <img v-else src="@/assets/svgs/user-plus.svg" v-on:click="show('register-modal')" alt="Menu" height="25px" />
           <img src="@/assets/svgs/cog.svg" alt="Menu" height="25px" />
-          <img v-if="loged" v-on:click="logout()" src="@/assets/svgs/sign-out-alt.svg" alt="Menu" height="25px" />
+          <img v-if="loged" v-on:click="show('choice-modal')" src="@/assets/svgs/sign-out-alt.svg" alt="Menu" height="25px" />
         </li>
       </ul>
     </nav>
@@ -30,6 +30,9 @@
     <modal name="profile-modal" height="auto" :scrollable="true" >
       <com-profile @exit="hide('profile-modal')"/>
     </modal>
+    <modal name="choice-modal" height="auto" :scrollable="true" >
+      <com-choice  @exit="hide('choice-modal')" message='Log out?'/>
+    </modal>
   </header>
 </template>
 
@@ -37,11 +40,13 @@
 import bus from "@/bus";
 import Register from "@/components/Register";
 import Profile from "@/components/Profile";
+import Choice from "@/components/Choice"
 export default {
   name: "Navbar", //this is the name of the component
   components: {
     "com-register": Register,
     "com-profile": Profile,
+    "com-choice": Choice,
   },
   data: () => ({
     loged: false
@@ -50,6 +55,11 @@ export default {
     bus.$on("login", criteria => {
       this.loged = criteria;
     });
+    bus.$on("logout", criteria => {
+      if(criteria){
+        this.logout()
+      }
+    })
     if(this.$session.get("token")){
       this.loged = true
     }

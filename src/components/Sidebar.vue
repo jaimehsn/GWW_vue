@@ -17,10 +17,9 @@
           <a href>...</a>
         </div>
         <div v-else v-for="group in groups" :key="group.id">
-          <a>{{nameComp(group.groupModel.name)}}</a>
+          <a v-on:click="emiter('showNotes', group.groupModel.name)">{{nameComp(group.groupModel.name)}}</a>
         </div>
       </div>
-
       <div class="bot" v-on:click="depliegue()">
         <img src="@/assets/svgs/plus-circle.svg" alt height="40px" />
       </div>
@@ -53,6 +52,9 @@ export default {
     depliegue() {
       bus.$emit("sidebar");
     },
+    emiter(dir, nam){
+      bus.$emit(dir, nam)
+    },
     async getGroups() {
       //console.log("GerGroups: ", await api.findAllGroups(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token")));
       this.groups = await api.findAllGroups(
@@ -61,11 +63,11 @@ export default {
       );
       console.log(this.groups);
     },
-    nameComp(name){
-      if(name.length >= 24){
-        return name.substring(0,11) + "..."
-      }else{
-        return name
+    nameComp(name) {
+      if (name.length >= 24) {
+        return name.substring(0, 11) + "...";
+      } else {
+        return name;
       }
     }
   }
@@ -105,13 +107,14 @@ export default {
 .sidenav a {
   padding: 10px 0px;
   text-decoration: none;
-  width:300px;
+  width: 300px;
   font-size: 25px;
   color: #f87060;
   display: block;
   transition: 0.3s;
   &:hover {
     background-color: #cdd7d6;
+    cursor: pointer;
   }
 }
 
