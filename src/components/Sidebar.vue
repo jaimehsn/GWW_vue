@@ -17,7 +17,9 @@
           <a href>...</a>
         </div>
         <div v-else v-for="group in groups" :key="group.id">
-          <a v-on:click="emiter('showNotes', group.groupModel.name)">{{nameComp(group.groupModel.name)}}</a>
+          <a
+            v-on:click="emiter('showNotes', group.groupModel.name)"
+          >{{nameComp(group.groupModel.name)}}</a>
         </div>
       </div>
       <div class="bot" v-on:click="depliegue()">
@@ -37,6 +39,7 @@ export default {
   }),
   mounted() {
     console.log("From Sidebar componente:", this.$session.get("token"));
+    this.getGroups()
     bus.$on("sidebar", () => {
       if (!this.sidebar) {
         document.getElementById("mySidenav").style.width = "300px";
@@ -52,8 +55,8 @@ export default {
     depliegue() {
       bus.$emit("sidebar");
     },
-    emiter(dir, nam){
-      bus.$emit(dir, nam)
+    emiter(dir, nam) {
+      bus.$emit(dir, nam);
     },
     async getGroups() {
       //console.log("GerGroups: ", await api.findAllGroups(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token")));
@@ -69,7 +72,8 @@ export default {
       } else {
         return name;
       }
-    }
+    },
+    shownotes() {}
   }
 };
 </script>

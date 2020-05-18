@@ -137,17 +137,27 @@ nav {
 @media all and (max-width: 600px) {
   .container {
     flex-wrap: wrap;
+
   }
   .container > li {
     flex-basis: 50%;
   }
+  .search {
+    order: 1;
+  }
+  .option{
+    justify-content: center;
+  }
+
 }
 @media all and (max-width: 400px) {
   .container > li {
     flex-basis: 100%;
+    justify-content:center ;
   }
-  .search {
-    order: 1;
+  .option{
+    order:1;
   }
+  
 }
 </style>

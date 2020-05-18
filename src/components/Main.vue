@@ -70,4 +70,14 @@ export default {
   height: 90% 
 }
 
+@media all and (max-width: 600px) {
+  .vl{
+    height: 0;
+  }
+  .container .state {
+  width: 100%;
+  height: 50%;
+}
+}
+
 </style>

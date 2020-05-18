@@ -24,7 +24,6 @@
       </p>
       <input class="form-submit" type="submit" value="Login" v-on:keyup.enter="login()" />
     </form>
-    
   </div>
 </template>
 
@@ -73,6 +72,79 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/css/login";
+
+.title {
+  text-align: center;
+}
+.form {
+  margin: 3rem auto;
+  display: flex;
+  width: 20%;
+  flex-direction: column;
+  min-width: 300px;
+  justify-content: center;
+  border: 1px solid #cdd7d6;
+  border-style: none solid;
+  border-color: #cdd7d6;
+  padding: 2.5em;
+}
+.form-label-login {
+  margin-top: 2rem;
+  color: #cdd7d6;
+  margin-bottom: 0.5rem;
+  &:first-of-type {
+    margin-top: 0rem;
+  }
+}
+.form-input-login {
+  padding: 1em;
+  text-align: center;
+  background: none;
+  background-image: none;
+  border: 1px solid #cdd7d6;
+  border-radius: 3px;
+  color: #102542;
+  &:focus {
+    outline: 0;
+    border-color: #31d843;
+  }
+}
+.form-submit {
+  background: #31d843;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  margin-top: 3rem;
+  padding: 1rem 0;
+  cursor: pointer;
+  &:hover {
+    background: #26ac34;
+  }
+}
+.error {
+  margin: 1rem 0 0;
+  color: #d00000;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #F87060;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ color: #F87060;
+ opacity: 1 /* esto es porque Firefox le reduce la opacidad por defecto */;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+ color: #F87060;
+ opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: #F87060;
+}
+@media all and (max-width: 400px) {
+  .form{
+    padding: 0;
+    border:none;
+  }
+  
+}
 
 </style>
