@@ -1,24 +1,22 @@
 <template>
-  <div class="componente">
+  <div class="container">
     <sidebar />
-    <h1 v-if="info != null">Nombre del grupo: {{info}}</h1>
-    <div class="container">
-      <div class="state">
-        <div class="todo">
-          <h1>To Do</h1>
-        </div>
+    <div class="state">
+      <div class="todo">
+        <h1>To Do</h1>
       </div>
-      <div class="vl"></div>
-      <div class="state">
-        <div class="process">
-          <h1>Process</h1>
-        </div>
+    </div>
+    <div class="vl"></div>
+    <div class="state">
+      <div class="process">
+        <h1>Process</h1>
       </div>
-      <div class="vl"></div>
-      <div class="state">
-        <div class="done">
-          <h1>Done</h1>
-        </div>
+    </div>
+    <div class="vl"></div>
+    <div class="state">
+      <div class="done">
+        <h1>Done</h1>
+        <div class="note"></div>
       </div>
     </div>
   </div>
@@ -55,48 +53,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.componente{
-
-}
 .container {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  height: 100%;
+  align-items: center;
+  height: 95%;
 }
 
 .container .state {
   width: 100%;
+  height: 100%;
 }
 .vl {
   border: 0.5px solid #cdd7d6;
-  padding-top: 30px;
-  padding-bottom: 30px;
   width: 0.5px;
-  height: 100%;
-}
-.hello {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hello div {
-  height: 200px;
-  width: 200px;
+  height: 90% 
 }
 
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 </style>

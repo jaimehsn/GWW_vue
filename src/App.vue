@@ -30,16 +30,18 @@ body {
   padding: 0px;
   background: linear-gradient(-45deg, #cdd7d6, #fff);
   background-size: 400% 400%;
-  height: 100%;
-}
+  height: 100%;}
 
 #app {
+  margin: 0px;
+  padding: 0px;
   font-family: "Rubik", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   height: 100%;
+  overflow: auto;
 }
 
 img {
