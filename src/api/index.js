@@ -3,7 +3,7 @@ import qs from "querystring"
 
 
 
-const ENDPOINT_PATH = "http://localhost:9000/api/";
+const ENDPOINT_PATH = "http://192.168.31.62:9000/api/";
 
 export default {
     
