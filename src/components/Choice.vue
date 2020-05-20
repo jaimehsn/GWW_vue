@@ -1,14 +1,14 @@
 <template>
   <div class="choice-container">
     <div class="question">
-      <h1>{{question}}</h1>
+      <h1>{{message}}</h1>
     </div>
     <div class="choice">
       <div class="yes">
-        <button v-on:click="logout(true)">Yes</button>
+        <button v-on:click="result(true)">Yes</button>
       </div>
       <div class="no">
-        <button v-on:click="logout(false)">No</button>
+        <button v-on:click="result(false)">No</button>
       </div>
     </div>
   </div>
@@ -17,19 +17,14 @@
 <script>
 import bus from "@/bus";
 export default {
-  props: ["message"],
-  data: () => ({
-    question: ""
-  }),
-  mounted() {
-    this.question = this.message;
-  },
+  props: ["message", "event"],
   methods: {
-    logout(res) {
+    result(res) {
       if (res) {
-        bus.$emit("logout", true);
+        bus.$emit(this.event, true);
+      } else {
+        this.$emit("exit");
       }
-      this.$emit("exit");
     }
   }
 };
@@ -61,8 +56,8 @@ export default {
   &:hover {
     background-color: #1e8929;
   }
-  &:active{
-      background-color: #31d843;
+  &:active {
+    background-color: #31d843;
   }
 }
 
@@ -71,8 +66,8 @@ export default {
   &:hover {
     background-color: #870000;
   }
-  &:active{
-      background-color: #d00000;
+  &:active {
+    background-color: #d00000;
   }
 }
 </style>

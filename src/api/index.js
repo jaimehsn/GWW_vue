@@ -1,8 +1,6 @@
 import axios from "axios";
 import qs from "querystring"
 
-
-
 const ENDPOINT_PATH = "http://192.168.31.62:9000/api/";
 
 export default {
@@ -53,7 +51,22 @@ export default {
         })
         return axios.put(ENDPOINT_PATH + "users/" + email, user,
         );
-    }
+    },
+
+    findAllNotes(group,token) {
+        axios.defaults.headers.common['Authorization'] = token;
+        console.log("TOKEN:", token)
+        return axios.get(ENDPOINT_PATH + "notes/" + group)
+            .then((response) => {
+                //console.log("Response from API Rest FIND ALL NOTES:", response.data)
+                return response.data
+            }).catch((error) => {
+                console.log("ERROR MESSAGE:", error.response.message)
+                return error.response.message
+            });
+        
+    },
+    
 
 
 };

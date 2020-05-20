@@ -31,7 +31,7 @@
       <com-profile @exit="hide('profile-modal')"/>
     </modal>
     <modal name="choice-modal" height="auto" :scrollable="true" >
-      <com-choice  @exit="hide('choice-modal')" message='Log out?'/>
+      <com-choice  @exit="hide('choice-modal')" message='Log out?' event='logout'/>
     </modal>
   </header>
 </template>
