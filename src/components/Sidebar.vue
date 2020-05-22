@@ -12,7 +12,7 @@
           <img src="@/assets/svgs/times.svg" alt v-on:click="depliegue()" height="40px" />
         </div>
       </div>
-      <div>
+      <div class="group-list">
         <div v-if="groups.length == 0">
           <a href>...</a>
         </div>
@@ -23,21 +23,60 @@
             >{{nameComp(group.groupModel.name)}}</a>
           </div>
           <div class="group-options">
-            <img src="@/assets/svgs/user-plus.svg" alt height="25px" v-if="group.admin == 1" />
-            <img src="@/assets/svgs/trash-alt.svg" alt height="25px" v-if="group.admin == 1" v-on:click="show('choice-modal-sidebar-delete')" />
-            <img src="@/assets/svgs/sign-out-alt.svg" alt height="25px" v-else v-on:click="show('choice-modal-sidebar'),target = group.groupModel.name" />
+            <img
+              src="@/assets/svgs/user-edit.svg"
+              alt
+              height="25px"
+              v-on:click="show('admin-users'),changeTarget(group.groupModel.name)"
+              v-if="group.admin == 1"
+            />
+            <img
+              src="@/assets/svgs/trash-alt.svg"
+              alt
+              height="25px"
+              v-if="group.admin == 1"
+              v-on:click="show('choice-modal-sidebar-delete'),changeTarget(group.groupModel.name)"
+            />
+            <img
+              src="@/assets/svgs/sign-out-alt.svg"
+              alt
+              height="25px"
+              v-else
+              v-on:click="show('choice-modal-sidebar-exit'),changeTarget(group.groupModel.name)"
+            />
           </div>
         </div>
       </div>
-      <div class="bot" v-on:click="depliegue()">
+      <div class="bot" v-on:click="show('create-group')">
         <img src="@/assets/svgs/plus-circle.svg" alt height="40px" />
       </div>
     </div>
-    <modal name="choice-modal-sidebar-delete" height="auto" :scrollable="true" >
-      <com-choice-sidebar  @exit="hide('choice-modal-sidebar-delete')" message='Delete?' event='delete-group'/>
+    <modal name="choice-modal-sidebar-delete" height="auto" :scrollable="true">
+      <com-choice-sidebar
+        @exit="hide('choice-modal-sidebar-delete')"
+        message="Delete?"
+        event="delete-group"
+      />
     </modal>
-    <modal name="choice-modal-sidebar" height="auto" :scrollable="true" >
-      <com-choice-sidebar  @exit="hide('choice-modal-sidebar')" message='Go out?' event='exit-group'/>
+    <modal name="choice-modal-sidebar-exit" height="auto" :scrollable="true">
+      <com-choice-sidebar
+        @exit="hide('choice-modal-sidebar-exit')"
+        message="Go out?"
+        event="exit-group"
+      />
+    </modal>
+    <modal name="create-group" height="auto" :scrollable="true">
+      <com-create-element
+        @exit="hide('create-group')"
+        message="Create group"
+        event="add-group"
+        btnA="Create"
+        btnB="Cancel"
+        element-type="Group"
+      />
+    </modal>
+    <modal name="admin-users" height="auto" :scrollable="true">
+      <com-admin-users @exit="hide('admin-users')" v-bind:groupName="this.target"/>
     </modal>
   </div>
 </template>
@@ -45,18 +84,23 @@
 <script>
 import bus from "@/bus";
 import api from "@/api";
-import Choice from "@/components/Choice"
+import Choice from "@/components/Choice";
+import AddElement from "@/components/AddElement";
+import AdminUsers from "@/components/AdminUsers";
 export default {
   components: {
-    "com-choice-sidebar": Choice
+    "com-choice-sidebar": Choice,
+    "com-create-element": AddElement,
+    "com-admin-users": AdminUsers
   },
   data: () => ({
     sidebar: false,
     groups: [],
-    target: null,
+    target: null
   }),
   mounted() {
     console.log("From Sidebar componente:", this.$session.get("token"));
+
     bus.$on("sidebar", () => {
       if (!this.sidebar) {
         document.getElementById("mySidenav").style.width = "300px";
@@ -66,11 +110,27 @@ export default {
         this.sidebar = false;
       }
     });
-    bus.$on("exit-group", () =>{
-      if(this.target != undefined ){
-        console.log("Eliminado Eliminado Eliminado Eliminado")
+
+    bus.$on("exit-group", () => {
+      if (this.target != undefined) {
+        this.exitFromAGroup(this.target);
       }
-    })
+    });
+    bus.$on("delete-group", () => {
+      if (this.target != undefined) {
+        this.deleteAGroup(this.target);
+      }
+    });
+
+    bus.$on("add-group", grpName => {
+      if (grpName != "") {
+        console.log("GROUPO CREADO:", grpName);
+        this.createAGroup(grpName);
+      } else {
+        console.log("GROUPO ERROR:", grpName);
+      }
+    });
+
     this.getGroups();
   },
   methods: {
@@ -83,16 +143,45 @@ export default {
     },
 
     async getGroups() {
-      //console.log("GerGroups: ", await api.findAllGroups(this.$jwtDec.decode(this.$session.get("token")).sub,this.$session.get("token")));
       this.groups = await api.findAllGroups(
         this.$jwtDec.decode(this.$session.get("token")).sub,
         this.$session.get("token")
       );
-      //console.log("GROUPOS DEL USUARIO",this.groups[0].groupModel.name);
-      bus.$emit("firstGroup", this.groups[0].groupModel.name)
+
+      bus.$emit("firstGroup", this.groups[0].groupModel.name);
     },
 
-    // Exit from a group
+    async exitFromAGroup(group) {
+      let respuesta = await api.exitGroup(
+        this.$jwtDec.decode(this.$session.get("token")).sub,
+        group,
+        this.$session.get("token")
+      );
+
+      if (respuesta == 200) {
+        this.getGroups();
+      }
+    },
+
+    async createAGroup(group) {
+      let respuesta = await api.createGroup(group, this.$session.get("token"));
+
+      if (respuesta == 200) {
+        this.getGroups();
+      }
+    },
+
+    async deleteAGroup(group) {
+      let respuesta = await api.deleteGroup(group, this.$session.get("token"));
+
+      if (respuesta == 200) {
+        this.getGroups();
+      }
+    },
+
+    changeTarget(group) {
+      this.target = group;
+    },
 
     nameComp(name) {
       if (name.length >= 15) {
@@ -108,9 +197,7 @@ export default {
 
     hide(modal_name) {
       this.$modal.hide(modal_name);
-    },
-
-    shownotes() {}
+    }
   }
 };
 </script>
@@ -124,8 +211,14 @@ export default {
   top: 0;
   left: 0;
   background-color: #fff;
-  overflow-x: hidden;
+  overflow: hidden;
   transition: 0.5s;
+  border-right: 1px solid #cdd7d6;
+}
+.group-list {
+  overflow: auto;
+  height: 100%;
+  max-height: 819.58px;
 }
 .list {
   display: flex;
@@ -133,14 +226,14 @@ export default {
   justify-content: space-evenly;
   align-items: center;
 }
-.group-name{
+.group-name {
   width: 70%;
   min-width: 200px;
 }
-.group-options{
+.group-options {
   width: 30%;
 }
-.group-options img{
+.group-options img {
   padding: 0 5px;
 }
 
@@ -155,17 +248,19 @@ export default {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 0px;
+  height: 5%;
+  padding: 0.25em 0px;
   justify-content: space-evenly;
   background-color: #cdd7d6;
-  position: absolute;
-  bottom: 0px;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .sidenav a {
   padding: 10px 0px;
   text-decoration: none;
-  
+
   font-size: 25px;
   color: #f87060;
   display: block;

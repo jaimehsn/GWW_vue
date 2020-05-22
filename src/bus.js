@@ -1,5 +1,6 @@
 import Vue from 'vue'
 
-const bus = new Vue() // Data bus for Events
+// Data bus for Events
+const bus = new Vue() 
 
 export default bus

@@ -5,14 +5,14 @@
         <div>
           <h1 class="title">Profile</h1>
         </div>
-        <div>
+        <div class="icons">
           <img
             v-if="editMode"
             src="@/assets/svgs/check.svg"
             alt="times"
             height="45px"
             width="35"
-            style="padding: 0px 5px"
+            
             v-on:click="sendInfo()"
           />
           <img
@@ -21,7 +21,7 @@
             alt="times"
             height="33px"
             width="35"
-            style="padding: 5px 5px"
+            
             v-on:click="editMode = !editMode"
           />
           <img
@@ -177,6 +177,17 @@ export default {
   align-items: center;
   justify-content: space-around;
 }
+
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.icons img {
+  margin: 0 5px;
+}
+
 .form-label {
   padding: 10px;
   margin: 5px;
