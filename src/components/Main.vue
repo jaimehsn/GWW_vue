@@ -52,6 +52,7 @@ export default {
     bus.$on("firstGroup", criteria => {
       if(criteria != undefined){
         this.getNotes(criteria)
+        console.log("SE EJECUTA EL GET NOTES")
       }
     });
 

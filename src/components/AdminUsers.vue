@@ -11,9 +11,7 @@
       </div>
     </div>
     <div class="content">
-      <div class="users">
-        
-      </div>
+      <div class="users"></div>
       <div class="add">
         <img
           src="@/assets/svgs/plus-circle.svg"
@@ -25,7 +23,12 @@
     </div>
     <modal name="add-user" height="auto" :scrollable="true">
       <com-create-element
-        @exit="hide('add-user')" message="Add User" event="add-user" btnA="Add" btnB="Cancel" elementType="Email"
+        @exit="hide('add-user')"
+        message="Add User"
+        event="add-user"
+        btnA="Add"
+        btnB="Cancel"
+        elementType="Email"
       />
     </modal>
   </div>
@@ -41,7 +44,13 @@ export default {
   components: {
     "com-create-element": AddElement,
   },
+  data: () => ({
+    users: null,
+  }),
   mounted() {
+    console.log("NOMBRE DEL GRUPO PARA LISTAR USAURIO: ", this.groupName)
+    this.getUsers(this.groupName)
+
     bus.$on("add-user", (email) => {
       if (this.groupName != undefined && email != "") {
         this.addUserIntoGroup(this.groupName, email);
@@ -66,14 +75,11 @@ export default {
     },
 
     async getUsers(group){
-      let respuesta = await api.getUsers(
+      this.users = await api.listUserGroup(
         group,
         this.$session.get("token")
-      );
-
-      if (respuesta == 200) {
-        this.getUsers();
-      }
+      )
+       console.log("***LIST USER OK***")
     },
 
     show(modal_name) {

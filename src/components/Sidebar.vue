@@ -46,9 +46,9 @@
             />
           </div>
         </div>
-      </div>
-      <div class="bot" v-on:click="show('create-group')">
-        <img src="@/assets/svgs/plus-circle.svg" alt height="40px" />
+        <div class="bot" v-on:click="show('create-group')">
+          <img src="@/assets/svgs/plus-circle.svg" alt height="40px" />
+        </div>
       </div>
     </div>
     <modal name="choice-modal-sidebar-delete" height="auto" :scrollable="true">
@@ -76,7 +76,7 @@
       />
     </modal>
     <modal name="admin-users" height="auto" :scrollable="true">
-      <com-admin-users @exit="hide('admin-users')" v-bind:groupName="this.target"/>
+      <com-admin-users @exit="hide('admin-users')" v-bind:groupName="this.target" />
     </modal>
   </div>
 </template>
@@ -124,8 +124,8 @@ export default {
 
     bus.$on("add-group", grpName => {
       if (grpName != "") {
-        console.log("GROUPO CREADO:", grpName);
         this.createAGroup(grpName);
+        console.log("GROUPO CREADO:", grpName);
       } else {
         console.log("GROUPO ERROR:", grpName);
       }
@@ -148,7 +148,7 @@ export default {
         this.$session.get("token")
       );
 
-      bus.$emit("firstGroup", this.groups[0].groupModel.name);
+      //bus.$emit("firstGroup", this.groups[0].groupModel.name);
     },
 
     async exitFromAGroup(group) {
@@ -217,8 +217,8 @@ export default {
 }
 .group-list {
   overflow: auto;
-  height: 100%;
-  max-height: 819.58px;
+  height: 90%;
+  overflow-x: hidden;
 }
 .list {
   display: flex;
@@ -243,6 +243,7 @@ export default {
   align-items: center;
   justify-content: space-evenly;
   background-color: #b3a394;
+  height: 10%;
 }
 .bot {
   display: flex;

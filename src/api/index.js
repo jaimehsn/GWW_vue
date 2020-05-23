@@ -46,17 +46,8 @@ export default {
 
     findAllGroups(email, token) {
         axios.defaults.headers.common['Authorization'] = token;
-        const datas = qs.stringify({
-            email,
-            'HTTP_CONTENT_LANGUAGE': self.language
-        })
-        const config = qs.stringify({
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'custom-header': 'custom-header'
-            }
-        })
-        return axios.get(ENDPOINT_PATH + "listGroups", datas, config)
+
+        return axios.get(ENDPOINT_PATH + "listGroups",)
             .then((response) => {
                 console.log("Response from API Rest FIND ALL GROUPS:", response.data)
                 return response.data
@@ -84,12 +75,12 @@ export default {
             });
     },
 
-    createGroup(grpName,token){
+    createGroup(grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
             grpName,
         })
-        return axios.post(ENDPOINT_PATH + "groups" , datas)
+        return axios.post(ENDPOINT_PATH + "groups", datas)
             .then((response) => {
                 console.log("Response from API Rest CREATE GRUOP :", response.status)
                 return response.status
@@ -99,7 +90,7 @@ export default {
             });
     },
 
-    deleteGroup(grpName,token){
+    deleteGroup(grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.delete(ENDPOINT_PATH + "groups", {
             data: {
@@ -115,18 +106,34 @@ export default {
             });
     },
 
-    addUser(email,grpName,token){
+    addUser(email, grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
             email,
             grpName,
         })
-        return axios.post(ENDPOINT_PATH + "add" , datas)
+        return axios.post(ENDPOINT_PATH + "add", datas)
             .then((response) => {
                 console.log("Response from API Rest USER ADDED :", response.status)
                 return response.status
             }).catch((error) => {
                 console.log("ERROR ADDUSER:", error.response.message)
+                return error.response.message
+            });
+    },
+
+    listUserGroup(grpName, token) {
+        axios.defaults.headers.common['Authorization'] = token;
+        return axios.get(ENDPOINT_PATH + "listUsers", {
+            params: {
+                grpName: grpName
+            }
+        })
+            .then((response) => {
+                console.log("Response from API Rest USER LISTS :", response.data)
+                return response.data
+            }).catch((error) => {
+                console.log("ERROR LISTUSERGROUP:", error.response.message)
                 return error.response.message
             });
     }
