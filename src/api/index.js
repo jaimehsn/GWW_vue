@@ -124,6 +124,7 @@ export default {
 
     listUserGroup(grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
+        console.log("NOMBRE DEL GRUPO: ", grpName)
         return axios.get(ENDPOINT_PATH + "listUsers", {
             params: {
                 grpName: grpName

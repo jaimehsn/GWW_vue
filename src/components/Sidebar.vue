@@ -113,19 +113,33 @@ export default {
 
     bus.$on("exit-group", () => {
       if (this.target != undefined) {
-        this.exitFromAGroup(this.target);
+        this.exitFromAGroup(this.target)
+          .then(() => {
+            this.getGroups();
+          })
+          .catch(err => {
+            console.log("ERROR ASYNC FUNCION exitFromAGroup:", err);
+          });
       }
     });
     bus.$on("delete-group", () => {
       if (this.target != undefined) {
-        this.deleteAGroup(this.target);
+        this.deleteAGroup(this.target).then(()=>{
+          this.getGroups();
+        }).catch(err =>{
+          console.log("ERROR ASYNC FUNCION deleteAGroup:", err);
+        });
       }
     });
 
     bus.$on("add-group", grpName => {
       if (grpName != "") {
-        this.createAGroup(grpName);
-        console.log("GROUPO CREADO:", grpName);
+        this.createAGroup(grpName).then(() => {
+          this.getGroups();
+          console.log("GROUPO CREADO:", grpName);
+        }).catch(err =>{
+          console.log("ERROR ASYNC FUNCION createAGroup:", err);
+        });
       } else {
         console.log("GROUPO ERROR:", grpName);
       }
@@ -147,40 +161,27 @@ export default {
         this.$jwtDec.decode(this.$session.get("token")).sub,
         this.$session.get("token")
       );
-
-      //bus.$emit("firstGroup", this.groups[0].groupModel.name);
     },
 
     async exitFromAGroup(group) {
-      let respuesta = await api.exitGroup(
+      await api.exitGroup(
         this.$jwtDec.decode(this.$session.get("token")).sub,
         group,
         this.$session.get("token")
       );
-
-      if (respuesta == 200) {
-        this.getGroups();
-      }
     },
 
     async createAGroup(group) {
-      let respuesta = await api.createGroup(group, this.$session.get("token"));
-
-      if (respuesta == 200) {
-        this.getGroups();
-      }
+      await api.createGroup(group, this.$session.get("token"));
     },
 
     async deleteAGroup(group) {
-      let respuesta = await api.deleteGroup(group, this.$session.get("token"));
-
-      if (respuesta == 200) {
-        this.getGroups();
-      }
+      await api.deleteGroup(group, this.$session.get("token"));
     },
 
     changeTarget(group) {
       this.target = group;
+      console.log("CAMBIO DEL TARGET:", this.target);
     },
 
     nameComp(name) {

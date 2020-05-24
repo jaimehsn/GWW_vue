@@ -11,7 +11,22 @@
       </div>
     </div>
     <div class="content">
-      <div class="users"></div>
+      <div class="users">
+        <div class="user" v-for="user in users" :key="user.id">
+          <div>
+            <p>{{user.userModel.email}}</p>
+          </div>
+          <div>
+            <img
+              src="@/assets/svgs/times.svg"
+              alt
+              height="45px"
+              v-if="user.userModel.email != email"
+              v-on:click="$emit('exit')"
+            />
+          </div>
+        </div>
+      </div>
       <div class="add">
         <img
           src="@/assets/svgs/plus-circle.svg"
@@ -35,51 +50,40 @@
 </template>
 
 <script>
-import api from "@/api"
-import AddElement from "@/components/AddElement"
+import api from "@/api";
+import AddElement from "@/components/AddElement";
 //import Choice from "@/components/Choice";
 import bus from "@/bus";
 export default {
-  props: ["groupName"],
+  props: ["groupName", "email"],
   components: {
-    "com-create-element": AddElement,
+    "com-create-element": AddElement
   },
   data: () => ({
-    users: null,
+    users: null
   }),
   mounted() {
-    console.log("NOMBRE DEL GRUPO PARA LISTAR USAURIO: ", this.groupName)
-    this.getUsers(this.groupName)
+    console.log("NOMBRE DEL GRUPO PARA LISTAR USAURIO: ", this.groupName);
+    this.getUsers(this.groupName);
 
-    bus.$on("add-user", (email) => {
+    bus.$on("add-user", email => {
       if (this.groupName != undefined && email != "") {
-        this.addUserIntoGroup(this.groupName, email);
+        this.addUserIntoGroup(this.groupName, email).then(() => {
+          this.getUsers(this.groupName);
+        }).catch(err =>{
+          console.log("ERROR ASYNC FUNCION:", err)
+        });
       }
     });
   },
   methods: {
-
-    async addUserIntoGroup(group,email) {
-      
-      let respuesta = await api.addUser(
-        email,
-        group,
-        this.$session.get("token")
-      );
-
-      if (respuesta == 200) {
-        //this.getUsers();
-        console.log("user add TODO OK*****************************")
-      }
-
+    async addUserIntoGroup(group, email) {
+      await api.addUser(email, group, this.$session.get("token"));
     },
 
-    async getUsers(group){
-      this.users = await api.listUserGroup(
-        group,
-        this.$session.get("token")
-      )
-       console.log("***LIST USER OK***")
+    async getUsers(group) {
+      this.users = await api.listUserGroup(group, this.$session.get("token"));
+      console.log("***LIST USER OK***");
     },
 
     show(modal_name) {
@@ -98,6 +102,11 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.user {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 .title {
   display: flex;
