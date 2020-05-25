@@ -23,27 +23,30 @@
             >{{nameComp(group.groupModel.name)}}</a>
           </div>
           <div class="group-options">
-            <img
-              src="@/assets/svgs/user-edit.svg"
-              alt
-              height="25px"
-              v-on:click="show('admin-users'),changeTarget(group.groupModel.name)"
-              v-if="group.admin == 1"
-            />
-            <img
-              src="@/assets/svgs/trash-alt.svg"
-              alt
-              height="25px"
-              v-if="group.admin == 1"
-              v-on:click="show('choice-modal-sidebar-delete'),changeTarget(group.groupModel.name)"
-            />
-            <img
-              src="@/assets/svgs/sign-out-alt.svg"
-              alt
-              height="25px"
-              v-else
-              v-on:click="show('choice-modal-sidebar-exit'),changeTarget(group.groupModel.name)"
-            />
+            <div v-if="group.admin == 1">
+              <img
+                src="@/assets/svgs/user-edit.svg"
+                alt
+                height="25px"
+                v-on:click="show('admin-users'),changeTarget(group.groupModel.name)"
+              />
+            </div>
+            <div v-if="group.admin == 1">
+              <img
+                src="@/assets/svgs/trash-alt.svg"
+                alt
+                height="25px"
+                v-on:click="show('choice-modal-sidebar-delete'),changeTarget(group.groupModel.name)"
+              />
+            </div>
+            <div v-else>
+              <img
+                src="@/assets/svgs/sign-out-alt.svg"
+                alt
+                height="25px"
+                v-on:click="show('choice-modal-sidebar-exit'),changeTarget(group.groupModel.name)"
+              />
+            </div>
           </div>
         </div>
         <div class="bot" v-on:click="show('create-group')">
@@ -76,7 +79,7 @@
       />
     </modal>
     <modal name="admin-users" height="auto" :scrollable="true">
-      <com-admin-users @exit="hide('admin-users')" v-bind:groupName="this.target" />
+      <com-admin-users @exit="hide('admin-users')" v-bind:groupName='this.target' :email='this.$jwtDec.decode(this.$session.get("token")).sub' />
     </modal>
   </div>
 </template>
@@ -124,22 +127,26 @@ export default {
     });
     bus.$on("delete-group", () => {
       if (this.target != undefined) {
-        this.deleteAGroup(this.target).then(()=>{
-          this.getGroups();
-        }).catch(err =>{
-          console.log("ERROR ASYNC FUNCION deleteAGroup:", err);
-        });
+        this.deleteAGroup(this.target)
+          .then(() => {
+            this.getGroups();
+          })
+          .catch(err => {
+            console.log("ERROR ASYNC FUNCION deleteAGroup:", err);
+          });
       }
     });
 
     bus.$on("add-group", grpName => {
       if (grpName != "") {
-        this.createAGroup(grpName).then(() => {
-          this.getGroups();
-          console.log("GROUPO CREADO:", grpName);
-        }).catch(err =>{
-          console.log("ERROR ASYNC FUNCION createAGroup:", err);
-        });
+        this.createAGroup(grpName)
+          .then(() => {
+            this.getGroups();
+            console.log("GROUPO CREADO:", grpName);
+          })
+          .catch(err => {
+            console.log("ERROR ASYNC FUNCION createAGroup:", err);
+          });
       } else {
         console.log("GROUPO ERROR:", grpName);
       }
@@ -233,6 +240,8 @@ export default {
 }
 .group-options {
   width: 30%;
+  display: flex;
+  flex-wrap: nowrap;
 }
 .group-options img {
   padding: 0 5px;

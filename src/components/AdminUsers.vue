@@ -12,18 +12,19 @@
     </div>
     <div class="content">
       <div class="users">
-        <div class="user" v-for="user in users" :key="user.id">
-          <div>
-            <p>{{user.userModel.email}}</p>
+        <div>
+            <div class="user-name">
+              <p>{{email}}</p>
+            </div>
           </div>
-          <div>
-            <img
-              src="@/assets/svgs/times.svg"
-              alt
-              height="45px"
-              v-if="user.userModel.email != email"
-              v-on:click="$emit('exit')"
-            />
+        <div class="user" v-for="user in users" :key="user.id">
+          <div class="items" v-if="user.userModel.email != email">
+            <div class="user-name">
+              <p>{{user.userModel.email}}</p>
+            </div>
+            <div class="user-control">
+              <img src="@/assets/svgs/sign-out-alt.svg" alt height="30px" v-on:click="emiter('del-user-group', user.userModel.email)" />
+            </div>
           </div>
         </div>
       </div>
@@ -68,13 +69,23 @@ export default {
 
     bus.$on("add-user", email => {
       if (this.groupName != undefined && email != "") {
-        this.addUserIntoGroup(this.groupName, email).then(() => {
-          this.getUsers(this.groupName);
-        }).catch(err =>{
-          console.log("ERROR ASYNC FUNCION:", err)
-        });
+        this.addUserIntoGroup(this.groupName, email)
+          .then(() => {
+            this.getUsers(this.groupName);
+          })
+          .catch(err => {
+            console.log("ERROR ASYNC FUNCION:", err);
+          });
       }
     });
+
+    bus.$on("del-user-group", (email) =>{
+      this.exitFromAGroup(this.groupName, email).then(() =>{
+        this.getUsers(this.groupName)
+      }).catch(err =>{
+        console.log("ERROR DEL-USER-GROUP:", err)
+      })
+    })
   },
   methods: {
     async addUserIntoGroup(group, email) {
@@ -86,13 +97,26 @@ export default {
       console.log("***LIST USER OK***");
     },
 
+    async exitFromAGroup(group, email) {
+      await api.exitGroup(
+        email,
+        group,
+        this.$session.get("token")
+      );
+    },
+
     show(modal_name) {
       this.$modal.show(modal_name);
     },
 
     hide(modal_name) {
       this.$modal.hide(modal_name);
+    },
+
+    emiter(event, criteria){
+      bus.$emit(event, criteria)
     }
+
   }
 };
 </script>
@@ -103,11 +127,21 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-.user {
-  display: flex;
+
+.user .items{
+display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
+
+.user-name{
+  width: 70%;
+}
+
+.user-control{
+  width: 30%;
+}
+
 .title {
   display: flex;
   align-items: center;

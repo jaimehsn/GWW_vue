@@ -6,10 +6,10 @@
     </div>
     <div class="choice">
       <div class="affirmative">
-        <button v-on:click="action(true)" @keyup.enter="action(true)">Create</button>
+        <button v-on:click="action(true)" @keyup.enter="action(true)">{{btnA}}</button>
       </div>
       <div class="negative">
-        <button v-on:click="action(false)">Cancel</button>
+        <button v-on:click="action(false)">{{btnB}}</button>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
 <script>
 import bus from "@/bus";
 export default {
-  props: ["message", "event", "btnA","btnN","elementType", ],
+  props: ["message", "event", "btnA","btnB","elementType", ],
   data: () => ({
     element: ""
   }),
