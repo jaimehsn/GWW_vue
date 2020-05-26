@@ -5,7 +5,6 @@
       <img src="@/assets/svgs/plus-circle-notes.svg" alt height="50px" />
     </div>
     <div class="state">
-      <h1>{{info}}</h1>
       <div class="todo">
         <h1>To Do</h1>
         <div class="content">
@@ -22,14 +21,28 @@
     <div class="state">
       <div class="process">
         <h1>Process</h1>
-        <div></div>
+        <div class="content">
+          <div
+            class="cuadrado"
+            v-for="note in notes"
+            :key="note.id"
+            v-bind:style="'transform: rotate(' + defineDeg()+'deg);'"
+          ></div>
+        </div>
       </div>
     </div>
     <div class="vl"></div>
     <div class="state">
       <div class="done">
         <h1>Done</h1>
-        <div class="note"></div>
+        <div class="content">
+          <div
+            class="cuadrado"
+            v-for="note in notes"
+            :key="note.id"
+            v-bind:style="'transform: rotate(' + defineDeg()+'deg);'"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
@@ -101,14 +114,15 @@ export default {
   height: 150px;
   margin: 0.5em;
   background-color: #cdd7d6;
-  -moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1);
-  /* Safari+Chrome */
-  -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
-  /* Opera */
-  box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+  box-shadow : 5px 5px 7px #757C7C;
+  
   &:hover {
-    transform: rotate(0deg);
+    transform: none ;
+    
     cursor: pointer;
+  }
+  &:active{
+    box-shadow : none;
   }
 }
 

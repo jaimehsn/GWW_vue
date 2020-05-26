@@ -40,6 +40,8 @@ export default {
 }
 .choice {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 2em;
 }
 .choice button {

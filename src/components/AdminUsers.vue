@@ -37,7 +37,7 @@
         />
       </div>
     </div>
-    <modal name="add-user" height="auto" :scrollable="true">
+    <modal name="add-user" height="auto" width="45%" :scrollable="true">
       <com-create-element
         @exit="hide('add-user')"
         message="Add User"
@@ -145,6 +145,7 @@ display: flex;
 .title {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   width: 100%;
   justify-content: space-around;
 }

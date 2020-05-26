@@ -24,13 +24,13 @@
         </li>
       </ul>
     </nav>
-    <modal name="register-modal" height="auto" :scrollable="true">
+    <modal class="modal-window" name="register-modal" height="auto" width="45%" :scrollable="true">
       <com-register @exit="hide('register-modal')"/>
     </modal>
-    <modal name="profile-modal" height="auto" :scrollable="true" >
+    <modal class="modal-window" name="profile-modal" height="auto"  width="45%" :scrollable="true" >
       <com-profile @exit="hide('profile-modal')"/>
     </modal>
-    <modal name="choice-modal" height="auto" :scrollable="true" >
+    <modal class="modal-window" name="choice-modal" height="auto" width="45%" :scrollable="true" >
       <com-choice  @exit="hide('choice-modal')" message='Log out?' event='logout'/>
     </modal>
   </header>
@@ -88,7 +88,9 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+
+
+<style lang="scss" >
 .logo h1{
   font-size: 2em;
   margin-block-start: 0em;

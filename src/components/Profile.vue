@@ -6,31 +6,35 @@
           <h1 class="title">Profile</h1>
         </div>
         <div class="icons">
-          <img
-            v-if="editMode"
-            src="@/assets/svgs/check.svg"
-            alt="times"
-            height="45px"
-            width="35"
-            
-            v-on:click="sendInfo()"
-          />
-          <img
-            v-if="!editMode"
-            src="@/assets/svgs/pen.svg"
-            alt="times"
-            height="33px"
-            width="35"
-            
-            v-on:click="editMode = !editMode"
-          />
-          <img
-            src="@/assets/svgs/times.svg"
-            alt="times"
-            height="45px"
-            width="35"
-            v-on:click="$emit('exit')"
-          />
+          <div>
+            <img
+              v-if="editMode"
+              src="@/assets/svgs/check.svg"
+              alt="times"
+              height="45px"
+              width="35"
+              v-on:click="sendInfo()"
+            />
+          </div>
+          <div>
+            <img
+              v-if="!editMode"
+              src="@/assets/svgs/pen.svg"
+              alt="times"
+              height="33px"
+              width="35"
+              v-on:click="editMode = !editMode"
+            />
+          </div>
+          <div>
+            <img
+              src="@/assets/svgs/times.svg"
+              alt="times"
+              height="45px"
+              width="35"
+              v-on:click="$emit('exit')"
+            />
+          </div>
         </div>
       </div>
       <form action method="put" @submit.prevent="sendInfo()">
@@ -136,15 +140,15 @@ export default {
           .catch(error => {
             console.log(error);
           });
-      }else{
-        this.editMode = false
+      } else {
+        this.editMode = false;
       }
     }
   }
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 .container-profile {
   display: flex;
   flex-direction: column;
@@ -175,6 +179,7 @@ export default {
   width: 100%;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
@@ -182,6 +187,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
+
 }
 
 .icons img {

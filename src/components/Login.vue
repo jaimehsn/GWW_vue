@@ -96,6 +96,23 @@ export default {
     margin-top: 0rem;
   }
 }
+.form-input {
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  background: none;
+  background-image: none;
+  border: 1px solid #cdd7d6;
+  border-radius: 3px;
+  color: #f87060;
+  &:focus {
+    outline: 0;
+    border-color: #31d843;
+  }
+  &::placeholder {
+    color: #f87060;
+  }
+}
 .form-input-login {
   padding: 1em;
   text-align: center;
