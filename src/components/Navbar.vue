@@ -8,7 +8,7 @@
         </li>
         <li v-if="loged" class="search">
           <div  class="input-icono">
-            <input type="text" class="search-input" />
+            <input type="text" class="search-input" v-bind:placeholder="groupName"/>
           </div>
         </li>
         <li v-else class="logo">
@@ -49,9 +49,15 @@ export default {
     "com-choice": Choice,
   },
   data: () => ({
-    loged: false
+    loged: false,
+    groupName: null
   }),
   mounted() {
+    bus.$on("showNotes", criteria => {
+      if (criteria != null) {
+        this.groupName = criteria;
+      }
+    });
     bus.$on("login", criteria => {
       this.loged = criteria;
     });

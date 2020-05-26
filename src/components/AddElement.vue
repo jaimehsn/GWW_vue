@@ -6,7 +6,7 @@
     </div>
     <div class="choice">
       <div class="affirmative">
-        <button v-on:click="action(true)" @keyup.enter="action(true)">{{btnA}}</button>
+        <button v-on:click="action(true)" v-on:keyup.enter="action(true)">{{btnA}}</button>
       </div>
       <div class="negative">
         <button v-on:click="action(false)">{{btnB}}</button>

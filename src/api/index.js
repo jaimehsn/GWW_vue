@@ -32,7 +32,6 @@ export default {
 
     findAllNotes(group, token) {
         axios.defaults.headers.common['Authorization'] = token;
-        console.log("TOKEN:", token)
         return axios.get(ENDPOINT_PATH + "notes/" + group)
             .then((response) => {
                 //console.log("Response from API Rest FIND ALL NOTES:", response.data)

@@ -19,7 +19,7 @@
         <div class="list" v-else v-for="group in groups" :key="group.id">
           <div class="group-name">
             <a
-              v-on:click="emiter('showNotes', group.groupModel.name)"
+              v-on:click="emiter('showNotes', group.groupModel.name),depliegue()"
             >{{nameComp(group.groupModel.name)}}</a>
           </div>
           <div class="group-options">
@@ -79,7 +79,9 @@
       />
     </modal>
     <modal name="admin-users" height="auto" :scrollable="true">
-      <com-admin-users @exit="hide('admin-users')" v-bind:groupName='this.target' :email='this.$jwtDec.decode(this.$session.get("token")).sub' />
+      <com-admin-users @exit="hide('admin-users')" 
+      v-bind:groupName='this.target' 
+      :email='this.$jwtDec.decode(this.$session.get("token")).sub' />
     </modal>
   </div>
 </template>
@@ -102,8 +104,6 @@ export default {
     target: null
   }),
   mounted() {
-    console.log("From Sidebar componente:", this.$session.get("token"));
-
     bus.$on("sidebar", () => {
       if (!this.sidebar) {
         document.getElementById("mySidenav").style.width = "300px";
@@ -152,7 +152,13 @@ export default {
       }
     });
 
-    this.getGroups();
+    this.getGroups()
+    .then(()=>{
+      bus.$emit("showNotes", this.groups[0].groupModel.name)
+    })
+    .catch(err=>{
+      console.log("GET GROUPS ERROR:" , err)
+    });
   },
   methods: {
     depliegue() {
