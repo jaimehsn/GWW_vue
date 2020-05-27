@@ -1,5 +1,4 @@
 <template>
-
   <header>
     <nav>
       <ul class="container">
@@ -7,8 +6,8 @@
           <img src="@/assets/svgs/bars.svg" alt="Menu" height="25px" v-on:click="sidebar()" />
         </li>
         <li v-if="loged" class="search">
-          <div  class="input-icono">
-            <input type="text" class="search-input" v-bind:placeholder="groupName"/>
+          <div class="input-icono">
+            <input type="text" class="search-input" v-bind:placeholder="groupName" />
           </div>
         </li>
         <li v-else class="logo">
@@ -17,21 +16,39 @@
           </div>
         </li>
         <li class="option">
-          <img v-if="loged" src="@/assets/svgs/user-circle.svg" alt="Menu" height="25px" v-on:click="show('profile-modal')"/>
-          <img v-else src="@/assets/svgs/user-plus.svg" v-on:click="show('register-modal')" alt="Menu" height="25px" />
+          <img
+            v-if="loged"
+            src="@/assets/svgs/user-circle.svg"
+            alt="Menu"
+            height="25px"
+            v-on:click="show('profile-modal')"
+          />
+          <img
+            v-else
+            src="@/assets/svgs/user-plus.svg"
+            v-on:click="show('register-modal')"
+            alt="Menu"
+            height="25px"
+          />
           <img src="@/assets/svgs/cog.svg" alt="Menu" height="25px" />
-          <img v-if="loged" v-on:click="show('choice-modal')" src="@/assets/svgs/sign-out-alt.svg" alt="Menu" height="25px" />
+          <img
+            v-if="loged"
+            v-on:click="show('choice-modal')"
+            src="@/assets/svgs/sign-out-alt.svg"
+            alt="Menu"
+            height="25px"
+          />
         </li>
       </ul>
     </nav>
-    <modal class="modal-window" name="register-modal" height="auto" width="45%" :scrollable="true">
-      <com-register @exit="hide('register-modal')"/>
+    <modal class="modal-window" name="register-modal" :height="'auto'" :adaptive="'adaptive'"  :scrollable="true">
+      <com-register @exit="hide('register-modal')" />
     </modal>
-    <modal class="modal-window" name="profile-modal" height="auto"  width="45%" :scrollable="true" >
-      <com-profile @exit="hide('profile-modal')"/>
+    <modal class="modal-window" name="profile-modal" height="auto" :adaptive="'adaptive'" :scrollable="true">
+      <com-profile @exit="hide('profile-modal')" />
     </modal>
-    <modal class="modal-window" name="choice-modal" height="auto" width="45%" :scrollable="true" >
-      <com-choice  @exit="hide('choice-modal')" message='Log out?' event='logout'/>
+    <modal class="modal-window" name="choice-modal" height="auto" :adaptive="'adaptive'" :scrollable="true">
+      <com-choice @exit="hide('choice-modal')" message="Log out?" event="logout" />
     </modal>
   </header>
 </template>
@@ -40,13 +57,13 @@
 import bus from "@/bus";
 import Register from "@/components/Register";
 import Profile from "@/components/Profile";
-import Choice from "@/components/Choice"
+import Choice from "@/components/Choice";
 export default {
   name: "Navbar", //this is the name of the component
   components: {
     "com-register": Register,
     "com-profile": Profile,
-    "com-choice": Choice,
+    "com-choice": Choice
   },
   data: () => ({
     loged: false,
@@ -62,19 +79,19 @@ export default {
       this.loged = criteria;
     });
     bus.$on("logout", criteria => {
-      if(criteria){
-        this.logout()
+      if (criteria) {
+        this.logout();
       }
-    })
-    if(this.$session.get("token")){
-      this.loged = true
+    });
+    if (this.$session.get("token")) {
+      this.loged = true;
     }
   },
   methods: {
     logout() {
-      this.$session.remove("token")
-      this.$router.push("/login")
-      bus.$emit("login", false)
+      this.$session.remove("token");
+      this.$router.push("/login");
+      bus.$emit("login", false);
     },
     show(modal_name) {
       this.$modal.show(modal_name);
@@ -82,8 +99,11 @@ export default {
     hide(modal_name) {
       this.$modal.hide(modal_name);
     },
-    sidebar(){
-      bus.$emit("sidebar")
+    sidebar() {
+      bus.$emit("sidebar");
+    },
+    transmitSize() {
+      console.log("RESIZE:", window.outerWidth);
     }
   }
 };
@@ -91,10 +111,10 @@ export default {
 
 
 <style lang="scss" >
-.logo h1{
+.logo h1 {
   font-size: 2em;
   margin-block-start: 0em;
-    margin-block-end: 0em;
+  margin-block-end: 0em;
 }
 
 .title {
@@ -145,7 +165,6 @@ nav {
 @media all and (max-width: 600px) {
   .container {
     flex-wrap: wrap;
-
   }
   .container > li {
     flex-basis: 50%;
@@ -153,19 +172,21 @@ nav {
   .search {
     order: 1;
   }
-  .option{
+  .option {
     justify-content: center;
   }
-
 }
 @media all and (max-width: 400px) {
   .container > li {
     flex-basis: 100%;
-    justify-content:center ;
+    justify-content: center;
   }
-  .option{
-    order:1;
+  .option {
+    order: 1;
   }
-  
+
+  .modal-window {
+    width: 100%;
+  }
 }
 </style>

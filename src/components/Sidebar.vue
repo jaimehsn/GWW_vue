@@ -54,21 +54,21 @@
         </div>
       </div>
     </div>
-    <modal name="choice-modal-sidebar-delete" height="auto" width="35%" :scrollable="true">
+    <modal name="choice-modal-sidebar-delete" height="auto" :adaptive="'adaptive'" :scrollable="true">
       <com-choice-sidebar
         @exit="hide('choice-modal-sidebar-delete')"
         message="Delete?"
         event="delete-group"
       />
     </modal>
-    <modal name="choice-modal-sidebar-exit" height="auto" width="35%" :scrollable="true">
+    <modal name="choice-modal-sidebar-exit" height="auto" :adaptive="'adaptive'" :scrollable="true">
       <com-choice-sidebar
         @exit="hide('choice-modal-sidebar-exit')"
         message="Go out?"
         event="exit-group"
       />
     </modal>
-    <modal name="create-group" height="auto" width="35%" :scrollable="true">
+    <modal name="create-group" height="auto" :adaptive="'adaptive'" :scrollable="true">
       <com-create-element
         @exit="hide('create-group')"
         message="Create group"
@@ -78,7 +78,7 @@
         element-type="Group"
       />
     </modal>
-    <modal name="admin-users" height="auto" width="35%" :scrollable="true">
+    <modal name="admin-users" height="auto" :adaptive="'adaptive'" :scrollable="true">
       <com-admin-users @exit="hide('admin-users')" 
       v-bind:groupName='this.target' 
       :email='this.$jwtDec.decode(this.$session.get("token")).sub' />

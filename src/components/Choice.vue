@@ -73,4 +73,11 @@ export default {
     background-color: #d00000;
   }
 }
+
+@media all and (max-width: 400px) {
+  .choice{
+    margin: 0;
+  }
+  
+}
 </style>

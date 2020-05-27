@@ -55,7 +55,6 @@ export default {
             this.error = false;
           }
           this.$session.set("token", response.data.token);
-          //console.log("Valor de la sesion: ", this.$session.get("token"));
           bus.$emit("login", true)
           this.$router.push("/");
         })
@@ -79,9 +78,10 @@ export default {
 .form {
   margin: 3rem auto;
   display: flex;
-  width: 20%;
+  width: 30%;
+  max-width: 400px;
+  min-width: 330px;
   flex-direction: column;
-  min-width: 300px;
   justify-content: center;
   border: 1px solid #cdd7d6;
   border-style: none solid;
@@ -156,10 +156,23 @@ export default {
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
  color: #F87060;
 }
+@media all and (max-width: 600px) {
+  .form{
+    width: 50%;
+    max-width: none;
+    min-width: 0;
+  }
+
+}
+
+
 @media all and (max-width: 400px) {
   .form{
-    padding: 0;
+    width: 90%;
+    padding: 1em;
+    max-width: none;
     border:none;
+    margin: 0;
   }
   
 }

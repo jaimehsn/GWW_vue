@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <sidebar />
+    <sidebar v-if="loged" />
     <div class="add-note-button">
       <img src="@/assets/svgs/plus-circle-notes.svg" alt height="50px" />
     </div>
@@ -56,7 +56,8 @@ export default {
   name: "Main",
   data: () => ({
     info: null,
-    notes: null
+    notes: null,
+    loged: null
   }),
   components: {
     sidebar: SideBar
@@ -65,6 +66,8 @@ export default {
     msg: String
   },
   mounted() {
+    this.loged = true;
+
     bus.$on("showNotes", criteria => {
       if (criteria != null) {
         this.notes = this.getNotes(criteria);
@@ -114,15 +117,15 @@ export default {
   height: 150px;
   margin: 0.5em;
   background-color: #cdd7d6;
-  box-shadow : 5px 5px 7px #757C7C;
-  
+  box-shadow: 5px 5px 7px #757c7c;
+
   &:hover {
-    transform: none ;
-    
+    transform: none;
+
     cursor: pointer;
   }
-  &:active{
-    box-shadow : none;
+  &:active {
+    box-shadow: none;
   }
 }
 

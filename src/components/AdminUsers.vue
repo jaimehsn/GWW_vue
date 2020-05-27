@@ -37,7 +37,7 @@
         />
       </div>
     </div>
-    <modal name="add-user" height="auto" width="45%" :scrollable="true">
+    <modal name="add-user" height="auto" :adaptive="'adaptive'" :scrollable="true">
       <com-create-element
         @exit="hide('add-user')"
         message="Add User"

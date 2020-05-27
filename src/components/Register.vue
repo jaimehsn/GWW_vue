@@ -127,7 +127,9 @@ export default {
   border: 1px solid #cdd7d6;
   border-style: none solid;
   border-color: #cdd7d6;
-
+  width: 100%;
+  max-width: 400px;
+  
 }
 ul {
   padding: 0;
@@ -136,10 +138,19 @@ ul {
   justify-content: center;
   background-color: #fff;
 }
+.form{
+  padding: 2em;
+  max-width: 450px;
+}
 
 
 .form-input {
   width: 100%;
+  margin: 1em 0 ;
+  padding: 10px 0;
+  border: 1px solid #cdd7d6;
+  text-align: center;
+  border-radius: 3px;
   &:focus {
     outline: 0;
     border-color: #31d843;
@@ -147,15 +158,24 @@ ul {
 }
 .form-submit {
   cursor: pointer;
-  
-  border:none;
+  width: 100%;
+  color:#fff;
+  border-width:0;
+  padding: 10px 0;
+  border-radius: 3px;
+  background-color: #31d843;
   transition: background 0.2s;
+  margin: 1em 0 ;
   &:hover {
-    background: #31d843;
+    background: #1d8427;
   }
 }
 .error {
   margin: 1rem 0 0;
   color: #d00000;
+}
+
+@media all and (max-width: 600px) {
+  
 }
 </style>

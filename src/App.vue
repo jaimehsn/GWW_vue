@@ -15,7 +15,8 @@ export default {
   methods: {
     foo: () => {
       this.$session.start();
-    }
+    },
+
   }
 };
 </script>
