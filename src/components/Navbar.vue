@@ -30,7 +30,6 @@
             alt="Menu"
             height="25px"
           />
-          <img src="@/assets/svgs/cog.svg" alt="Menu" height="25px" />
           <img
             v-if="loged"
             v-on:click="show('choice-modal')"
@@ -41,13 +40,31 @@
         </li>
       </ul>
     </nav>
-    <modal class="modal-window" name="register-modal" :height="'auto'" :adaptive="'adaptive'"  :scrollable="true">
+    <modal
+      class="modal-window"
+      name="register-modal"
+      :height="'auto'"
+      :adaptive="'adaptive'"
+      :scrollable="true"
+    >
       <com-register @exit="hide('register-modal')" />
     </modal>
-    <modal class="modal-window" name="profile-modal" height="auto" :adaptive="'adaptive'" :scrollable="true">
+    <modal
+      class="modal-window"
+      name="profile-modal"
+      height="auto"
+      :adaptive="'adaptive'"
+      :scrollable="true"
+    >
       <com-profile @exit="hide('profile-modal')" />
     </modal>
-    <modal class="modal-window" name="choice-modal" height="auto" :adaptive="'adaptive'" :scrollable="true">
+    <modal
+      class="modal-window"
+      name="choice-modal"
+      height="auto"
+      :adaptive="'adaptive'"
+      :scrollable="true"
+    >
       <com-choice @exit="hide('choice-modal')" message="Log out?" event="logout" />
     </modal>
   </header>
@@ -100,7 +117,9 @@ export default {
       this.$modal.hide(modal_name);
     },
     sidebar() {
-      bus.$emit("sidebar");
+      if (this.loged) {
+        bus.$emit("sidebar");
+      }
     },
     transmitSize() {
       console.log("RESIZE:", window.outerWidth);
@@ -171,11 +190,14 @@ nav {
   }
   .search {
     order: 1;
+    margin: 1em 0;
+    
   }
   .option {
     justify-content: center;
   }
 }
+
 @media all and (max-width: 400px) {
   .container > li {
     flex-basis: 100%;
@@ -183,6 +205,9 @@ nav {
   }
   .option {
     order: 1;
+  }
+  .search {
+    margin: 1em 1em;
   }
 
   .modal-window {

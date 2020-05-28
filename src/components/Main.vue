@@ -8,12 +8,12 @@
       <div class="todo">
         <h1>To Do</h1>
         <div class="content">
-          <div
-            class="cuadrado"
-            v-for="note in notes"
+          <com-note
+            v-for="note in todo"
             :key="note.id"
-            v-bind:style="'transform: rotate(' + defineDeg()+'deg);'"
-          ></div>
+            :title="note.title"
+            :content="note.content"
+          />
         </div>
       </div>
     </div>
@@ -22,12 +22,12 @@
       <div class="process">
         <h1>Process</h1>
         <div class="content">
-          <div
-            class="cuadrado"
-            v-for="note in notes"
+          <com-note
+            v-for="note in process"
             :key="note.id"
-            v-bind:style="'transform: rotate(' + defineDeg()+'deg);'"
-          ></div>
+            :title="note.title"
+            :content="note.content"
+          />
         </div>
       </div>
     </div>
@@ -36,37 +36,52 @@
       <div class="done">
         <h1>Done</h1>
         <div class="content">
-          <div
-            class="cuadrado"
-            v-for="note in notes"
+          <com-note
+            v-for="note in done"
             :key="note.id"
-            v-bind:style="'transform: rotate(' + defineDeg()+'deg);'"
-          ></div>
+            :title="note.title"
+            :content="note.content"
+            v-on:click="this.bus.$emit('admin-note')"
+          />
+          
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
 <script>
 import api from "@/api";
 import SideBar from "@/components/Sidebar";
+//import adminNote from "@/components/AdminNote";
+import note from "@/components/Note";
 import bus from "@/bus";
 export default {
   name: "Main",
   data: () => ({
     info: null,
     notes: null,
-    loged: null
+    loged: null,
+    todo: [],
+    process: [],
+    done: [],
+    note: []
   }),
   components: {
-    sidebar: SideBar
+    sidebar: SideBar,
+    "com-note": note,
+    /*"com-adminNote": adminNote*/
   },
   props: {
     msg: String
   },
   mounted() {
     this.loged = true;
+    bus.$on("admin-note", () =>{
+      this.show("hola")
+      console.log("VECES")
+    })
 
     bus.$on("showNotes", criteria => {
       if (criteria != null) {
@@ -82,18 +97,34 @@ export default {
     async getNotes(group) {
       let data = await api.findAllNotes(group, this.$session.get("token"));
       this.notes = data[0].NotesModel;
+      this.sorter(data[0].NotesModel);
     },
-
-    nameComp(name) {
-      if (name.length >= 15) {
-        return name.substring(0, 9) + "...";
+    nameComp(name, num) {
+      if (name.length >= num) {
+        return name.substring(0, num) + "...";
       } else {
         return name;
       }
     },
-    defineDeg() {
-      return Math.random() * (2 - -2 + 1) + -2;
-    }
+
+    sorter(data) {
+      data.forEach(valor => {
+        switch (valor.state) {
+          case "to do":
+            this.todo.push(valor);
+            break;
+          case "in process":
+            this.process.push(valor);
+            break;
+          case "done":
+            this.done.push(valor);
+            break;
+          default:
+            this.note.push(valor);
+            break;
+        }
+      });
+    },
   }
 };
 </script>
@@ -112,22 +143,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-.cuadrado {
-  width: 150px;
-  height: 150px;
-  margin: 0.5em;
-  background-color: #cdd7d6;
-  box-shadow: 5px 5px 7px #757c7c;
-
-  &:hover {
-    transform: none;
-
-    cursor: pointer;
-  }
-  &:active {
-    box-shadow: none;
-  }
-}
 
 .container .state {
   width: 100%;
@@ -141,7 +156,7 @@ export default {
 
 .add-note-button {
   position: absolute;
-  left: 85%;
+  left: 90%;
   top: 85%;
   z-index: 10;
 }
@@ -153,6 +168,16 @@ export default {
   .container .state {
     width: 100%;
     height: 100%;
+  }
+  .add-note-button {
+    left: 85%;
+    top: 85%;
+  }
+}
+@media all and (max-width: 400px) {
+  .add-note-button {
+    left: 75%;
+    top: 85%;
   }
 }
 </style>

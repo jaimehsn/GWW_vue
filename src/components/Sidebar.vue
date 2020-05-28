@@ -248,6 +248,7 @@ export default {
   width: 30%;
   display: flex;
   flex-wrap: nowrap;
+  justify-content: center;
 }
 .group-options img {
   padding: 0 5px;

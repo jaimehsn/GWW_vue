@@ -31,7 +31,7 @@
 import auth from "@/login/auth";
 import bus from "@/bus"
 export default {
-  
+  mane: "login",
   data: () => ({
     email: "",
     password: "",
@@ -40,7 +40,6 @@ export default {
     shoWmodal: false,
   }),
   mounted() {
-    console.log(this.$session.get("token"));
     if (this.$session.get("token")) {
       this.$router.push("/");
     }

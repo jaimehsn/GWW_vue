@@ -10,7 +10,7 @@ export default {
 
         return axios.get(ENDPOINT_PATH + "users/" + email)
             .then((response) => {
-                console.log("Response from API Rest USER INFO:", response.data)
+                console.log("Response from API Rest USER INFO: OK ")
                 return response.data
             }).catch((error) => {
                 console.log("ERROR USERINFO:", error.response.message)
@@ -34,7 +34,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.get(ENDPOINT_PATH + "notes/" + group)
             .then((response) => {
-                //console.log("Response from API Rest FIND ALL NOTES:", response.data)
+                console.log("Response from API Rest FIND ALL NOTES:", response.data[0])
                 return response.data
             }).catch((error) => {
                 console.log("ERROR FINDALLNOTES:", error.response.message)
@@ -48,7 +48,7 @@ export default {
 
         return axios.get(ENDPOINT_PATH + "listGroups",)
             .then((response) => {
-                console.log("Response from API Rest FIND ALL GROUPS:", response.data)
+                console.log("Response from API Rest FIND ALL GROUPS: OK")
                 return response.data
             }).catch((error) => {
                 console.log("ERROR FINDALLGROUPS:", error.response.message)
@@ -66,7 +66,7 @@ export default {
             }
         })
             .then((response) => {
-                console.log("Response message:", response.data)
+                console.log("ExitGroup: OK")
                 return response.status
             }).catch((error) => {
                 console.log("ERROR EXITGROUP:", error.response.message)
@@ -81,7 +81,7 @@ export default {
         })
         return axios.post(ENDPOINT_PATH + "groups", datas)
             .then((response) => {
-                console.log("Response from API Rest CREATE GRUOP :", response.status)
+                console.log("Response from API Rest CREATE GRUOP : OK")
                 return response.status
             }).catch((error) => {
                 console.log("ERROR CREATEAGROUP:", error.response.message)
@@ -97,7 +97,7 @@ export default {
             }
         })
             .then((response) => {
-                console.log("Response message:", response.data)
+                console.log("DELETE GROUP: OK")
                 return response.status
             }).catch((error) => {
                 console.log("ERROR DELETEAGROUP:", error.response.message)
@@ -113,7 +113,7 @@ export default {
         })
         return axios.post(ENDPOINT_PATH + "add", datas)
             .then((response) => {
-                console.log("Response from API Rest USER ADDED :", response.status)
+                console.log("Response from API Rest USER ADDED : OK")
                 return response.status
             }).catch((error) => {
                 console.log("ERROR ADDUSER:", error.response.message)
@@ -130,7 +130,7 @@ export default {
             }
         })
             .then((response) => {
-                console.log("Response from API Rest USER LISTS :", response.data)
+                console.log("Response from API Rest USER LISTS : OK")
                 return response.data
             }).catch((error) => {
                 console.log("ERROR LISTUSERGROUP:", error.response.message)

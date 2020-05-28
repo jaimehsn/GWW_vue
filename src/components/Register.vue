@@ -112,7 +112,7 @@ export default {
 }
 .items {
   display: flex;
-  width: 60%;
+  width: 100%;
   align-items: center;
   justify-content: space-around;
   flex-wrap: wrap;
