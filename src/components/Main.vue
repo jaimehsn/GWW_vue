@@ -2,7 +2,7 @@
   <div class="container">
     <sidebar v-if="loged" />
     <div class="add-note-button">
-      <img src="@/assets/svgs/plus-circle-notes.svg" alt height="50px" />
+      <img src="@/assets/svgs/plus-circle-notes.svg" alt height="50px" v-on:click="show('nota@')" />
     </div>
     <div class="state">
       <div class="todo">
@@ -11,8 +11,11 @@
           <com-note
             v-for="note in todo"
             :key="note.id"
+            :id="note.id"
+            :autor="note.autor"
             :title="note.title"
             :content="note.content"
+            :state="note.state"
           />
         </div>
       </div>
@@ -25,8 +28,11 @@
           <com-note
             v-for="note in process"
             :key="note.id"
+            :id="note.id"
+            :autor="note.autor"
             :title="note.title"
             :content="note.content"
+            :state="note.state"
           />
         </div>
       </div>
@@ -40,21 +46,25 @@
             v-for="note in done"
             :key="note.id"
             :title="note.title"
+            :id="note.id"
+            :autor="note.autor"
             :content="note.content"
-            v-on:click="this.bus.$emit('admin-note')"
+            :state="note.state"
           />
           
         </div>
       </div>
     </div>
-    
+    <modal name='nota@' height="auto" :adaptive="'adaptive'" >
+      <com-adminNote v-bind:new="true" @exit="hide('nota@')" />
+    </modal>
   </div>
 </template>
 
 <script>
 import api from "@/api";
 import SideBar from "@/components/Sidebar";
-//import adminNote from "@/components/AdminNote";
+import adminNote from "@/components/AdminNote";
 import note from "@/components/Note";
 import bus from "@/bus";
 export default {
@@ -71,7 +81,7 @@ export default {
   components: {
     sidebar: SideBar,
     "com-note": note,
-    /*"com-adminNote": adminNote*/
+    "com-adminNote": adminNote
   },
   props: {
     msg: String
@@ -125,6 +135,14 @@ export default {
         }
       });
     },
+
+    show(modal_name) {
+      this.$modal.show(modal_name);
+    },
+
+    hide(modal_name) {
+      this.$modal.hide(modal_name);
+    }
   }
 };
 </script>

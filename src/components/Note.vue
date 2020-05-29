@@ -5,16 +5,27 @@
       <div class="vl"></div>
       <p class="content">{{nameComp(this.content, 60)}}</p>
     </div>
-    <modal v-bind:name="'nota@' + this.title" @exit="hide('hola')">
+    <modal v-bind:name="'nota@' + this.title" height="auto" :adaptive="'adaptive'">
+      <admin-note
+        v-bind:title="this.title"
+        :content="this.content"
+        :state="this.state"
+        :autor="this.autor"
+        :id="this.id"
+        @exit="hide('nota@' + title)"
+      />
     </modal>
   </div>
 </template>
 
 <script>
-import bus from "@/bus"
+import adminNote from "@/components/AdminNote";
+import bus from "@/bus";
 export default {
-  props: ["title", "content", "state"],
-  components: {},
+  props: ["title", "content", "state","autor", "id"],
+  components: {
+    "admin-note": adminNote
+  },
 
   data: () => ({}),
 
@@ -32,8 +43,8 @@ export default {
       return Math.random() * (2 - -2 + 1) + -2;
     },
 
-    emiter(){
-      bus.$emit('admin-note')
+    emiter() {
+      bus.$emit("admin-note");
     },
     show(modal_name) {
       this.$modal.show(modal_name);
