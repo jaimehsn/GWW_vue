@@ -46,7 +46,7 @@ export default {
     findAllGroups(email, token) {
         axios.defaults.headers.common['Authorization'] = token;
 
-        return axios.get(ENDPOINT_PATH + "listGroups",)
+        return axios.get(ENDPOINT_PATH + "listGroups")
             .then((response) => {
                 console.log("Response from API Rest FIND ALL GROUPS: OK")
                 return response.data
@@ -134,6 +134,55 @@ export default {
                 return response.data
             }).catch((error) => {
                 console.log("ERROR LISTUSERGROUP:", error.response.message)
+                return error.response.message
+            });
+    },
+
+    createNote(title, content, state, grpName, autor, token) {
+        axios.defaults.headers.common['Authorization'] = token;
+        const datas = qs.stringify({
+            title,
+            content,
+            grpName,
+            state,
+            autor,
+        })
+        return axios.post(ENDPOINT_PATH + "notes", datas)
+            .then((response) => {
+                console.log("Response from API Rest CREATE NOTE : OK")
+                return response.data
+            }).catch((error) => {
+                console.log("ERROR CREATENOTE:", error.response.message)
+                return error.response.message
+            });
+    },
+
+    updateNote(id, title, content, state, autor, token) {
+        axios.defaults.headers.common['Authorization'] = token;
+        const datas = qs.stringify({
+            title,
+            content,
+            state,
+            autor,
+        })
+        return axios.put(ENDPOINT_PATH + "notes/" + id, datas)
+            .then((response) => {
+                console.log("Response from API Rest UPDATE NOTE : OK")
+                return response.data
+            }).catch((error) => {
+                console.log("ERROR UPDATENOTE:", error.response.message)
+                return error.response.message
+            });
+    },
+
+    deleteNote(id, token){
+        axios.defaults.headers.common['Authorization'] = token;
+        return axios.delete(ENDPOINT_PATH + "notes/delOnes/" + id)
+            .then((response) => {
+                console.log("Response from API Rest DELETE NOTE : OK")
+                return response.data
+            }).catch((error) => {
+                console.log("ERROR DELETENOTE:", error.response.message)
                 return error.response.message
             });
     }

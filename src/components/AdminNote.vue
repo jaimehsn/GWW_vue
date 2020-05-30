@@ -2,7 +2,23 @@
   <div class="admin-note">
     <div class="admin-title">
       <div>
-        <textarea class="titleArea" v-model="admin_title" name="title" cols="25" rows="1"></textarea>
+        <textarea
+          class="titleArea"
+          v-model="admin_title"
+          name="title"
+          cols="25"
+          rows="1"
+          v-on:focus="edit = true"
+        ></textarea>
+      </div>
+      <div>
+        <select v-model="admin_state" name="state">
+          <option value="state" disabled>State...</option>
+          <option value="to do">To do</option>
+          <option value="in process">In process</option>
+          <option value="done">Done</option>
+          <option value="note">Note</option>
+        </select>
       </div>
       <div>
         <img src="@/assets/svgs/times.svg" alt="times" height="45px" v-on:click="$emit('exit')" />
@@ -10,11 +26,26 @@
     </div>
     <div class="vl"></div>
     <div class="admin-content">
-      <textarea class="contentArea" v-model="admin_content" name="content" cols="25" rows="15"></textarea>
+      <textarea
+        class="contentArea"
+        v-model="admin_content"
+        name="content"
+        cols="5"
+        rows="15"
+        v-on:focus="edit = true"
+      ></textarea>
     </div>
     <div class="admin-controll">
+      <div v-if="edit">
+        <img
+          src="@/assets/svgs/save.svg"
+          alt="times"
+          height="35px"
+          v-on:click="acction(),$emit('exit')"
+        />
+      </div>
       <div>
-        <img src="@/assets/svgs/save.svg" alt="times" height="35px" v-on:click="$emit('exit')" />
+        <img src="@/assets/svgs/trash-alt.svg" alt="trash" height="35px" v-on:click="trash()" />
       </div>
     </div>
     <div class="admin-info" v-if="!this.new">
@@ -26,22 +57,83 @@
 </template>
 
 <script>
+import api from "@/api";
+import bus from "@/bus";
 export default {
-  props: ["title", "content", "state", "new","id", "autor"],
+  props: ["title", "content", "state", "new", "id", "autor", "group"],
+
   data: () => ({
     admin_title: null,
-    admin_content: null
+    admin_content: null,
+    admin_id: null,
+    edit: false,
+    admin_state: null,
+    groupName: null
   }),
+
   mounted() {
     if (this.new) {
       this.admin_title = "Title here...";
       this.admin_content = "Content here...";
+      this.groupName = this.group;
+      this.admin_state = "state";
     } else {
+      this.admin_id = this.id;
       this.admin_title = this.title;
       this.admin_content = this.content;
+      this.groupName = this.group;
+      this.admin_state = this.state;
     }
   },
-  methods: {}
+
+  methods: {
+    async acction() {
+      if (this.new) {
+        await api
+          .createNote(
+            this.admin_title,
+            this.admin_content,
+            this.admin_state,
+            this.groupName,
+            this.$jwtDec.decode(this.$session.get("token")).sub,
+            this.$session.get("token")
+          )
+          .then(() => {
+            bus.$emit("showNotes", this.groupName);
+          })
+          .catch(err => {
+            console.log("ERROR ASYNC FUNCION deleteNote:", err);
+          });
+      } else {
+        await api
+          .updateNote(
+            this.admin_id,
+            this.admin_title,
+            this.admin_content,
+            this.admin_state,
+            this.$jwtDec.decode(this.$session.get("token")).sub,
+            this.$session.get("token")
+          )
+          .then(() => {
+            bus.$emit("showNotes", this.groupName);
+          })
+          .catch(err => {
+            console.log("ERROR ASYNC FUNCION deleteNote:", err);
+          });
+      }
+    },
+
+    async trash() {
+      await api
+        .deleteNote(this.admin_id, this.$session.get("token"))
+        .then(() => {
+          bus.$emit("showNotes", this.groupName);
+        })
+        .catch(err => {
+          console.log("ERROR ASYNC FUNCION deleteNote:", err);
+        });
+    }
+  }
 };
 </script>
 
@@ -61,27 +153,29 @@ export default {
   align-items: center;
 }
 
+.admin-title select {
+}
+
 .admin-content {
   margin: 1em 12%;
 }
 
 .admin-controll {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin: 1em 12%;
 }
-.admin-info{
+.admin-info {
   display: flex;
 }
 
-
-.admin-info div{
+.admin-info div {
   margin: 1em 12%;
 }
 
 .titleArea {
   font-family: "Rubik", sans-serif;
-  width: 100%;
+  width: 80%;
   border: none;
   resize: inherit;
   text-align: left;

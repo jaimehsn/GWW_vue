@@ -16,6 +16,7 @@
             :title="note.title"
             :content="note.content"
             :state="note.state"
+            :groupName="groupName"
           />
         </div>
       </div>
@@ -33,6 +34,7 @@
             :title="note.title"
             :content="note.content"
             :state="note.state"
+            :groupName="groupName"
           />
         </div>
       </div>
@@ -50,13 +52,13 @@
             :autor="note.autor"
             :content="note.content"
             :state="note.state"
+            :groupName="groupName"
           />
-          
         </div>
       </div>
     </div>
-    <modal name='nota@' height="auto" :adaptive="'adaptive'" >
-      <com-adminNote v-bind:new="true" @exit="hide('nota@')" />
+    <modal name="nota@" height="auto" :adaptive="'adaptive'">
+      <com-adminNote v-bind:new="true" :group="groupName" @exit="hide('nota@')" />
     </modal>
   </div>
 </template>
@@ -76,7 +78,8 @@ export default {
     todo: [],
     process: [],
     done: [],
-    note: []
+    note: [],
+    groupName: null
   }),
   components: {
     sidebar: SideBar,
@@ -88,14 +91,20 @@ export default {
   },
   mounted() {
     this.loged = true;
-    bus.$on("admin-note", () =>{
-      this.show("hola")
-      console.log("VECES")
-    })
+    bus.$on("admin-note", () => {
+      this.show("hola");
+      console.log("VECES");
+    });
 
     bus.$on("showNotes", criteria => {
       if (criteria != null) {
+        this.notes = [];
+        this.todo = [];
+        this.done = [];
+        this.process = [];
+        this.note = [];
         this.notes = this.getNotes(criteria);
+        this.groupName = criteria;
       }
     });
 

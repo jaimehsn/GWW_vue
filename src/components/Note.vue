@@ -12,6 +12,7 @@
         :state="this.state"
         :autor="this.autor"
         :id="this.id"
+        :group="groupName"
         @exit="hide('nota@' + title)"
       />
     </modal>
@@ -22,14 +23,16 @@
 import adminNote from "@/components/AdminNote";
 import bus from "@/bus";
 export default {
-  props: ["title", "content", "state","autor", "id"],
+  props: ["title", "content", "state","autor", "id","groupName"],
   components: {
     "admin-note": adminNote
   },
 
   data: () => ({}),
 
-  mounted() {},
+  mounted() {
+    console.log("GRUPO: " ,this.groupName)
+  },
 
   methods: {
     nameComp(name, num) {
