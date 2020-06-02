@@ -115,8 +115,8 @@ export default {
   methods: {
     async getNotes(group) {
       let data = await api.findAllNotes(group, this.$session.get("token"));
-      this.notes = data[0].NotesModel;
-      this.sorter(data[0].NotesModel);
+      bus.$emit("takeNotes", data[0].NotesModel);
+      return this.sorter(data[0].NotesModel);
     },
     nameComp(name, num) {
       if (name.length >= num) {

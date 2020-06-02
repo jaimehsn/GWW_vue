@@ -7,7 +7,32 @@
         </li>
         <li v-if="loged" class="search">
           <div class="input-icono">
-            <input type="text" class="search-input" v-bind:placeholder="groupName" />
+            <input
+              @focus="searchFocus = true"
+              @blur="unfocus()"
+              v-model="search"
+              type="text"
+              class="search-input"
+              v-bind:placeholder="groupName"
+            />
+          </div>
+          <div v-if="searchFocus" class="options-search">
+            <div
+              class="result"
+              v-for="note in filteredList"
+              :key="note.id"
+              @click="show('nota@'+note.title), searchFocus = false"
+            >
+              <div class="item1">
+                <img
+                  src="@/assets/svgs/sticky-note.svg"
+                  alt="Menu"
+                  height="25px"
+                  v-on:click="sidebar()"
+                />
+              </div>
+              <div class="item2">{{note.title}}</div>
+            </div>
           </div>
         </li>
         <li v-else class="logo">
@@ -84,9 +109,15 @@ export default {
   },
   data: () => ({
     loged: false,
-    groupName: null
+    groupName: null,
+    arrayNotes: null,
+    search: "",
+    searchFocus: false
   }),
   mounted() {
+    bus.$on("takeNotes", criteria => {
+      this.arrayNotes = criteria;
+    });
     bus.$on("showNotes", criteria => {
       if (criteria != null) {
         this.groupName = criteria;
@@ -123,6 +154,24 @@ export default {
     },
     transmitSize() {
       console.log("RESIZE:", window.outerWidth);
+    },
+    sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
+    async unfocus() {
+      await this.sleep(100);
+      this.search = "";
+    }
+  },
+  computed: {
+    filteredList() {
+      if (this.search != "") {
+        return this.arrayNotes.filter(note => {
+          return note.title.toLowerCase().includes(this.search.toLowerCase());
+        });
+      } else {
+        return [];
+      }
     }
   }
 };
@@ -159,6 +208,37 @@ nav {
 .search {
   width: 30%;
 }
+
+.options-search {
+  position: absolute;
+  background-color: #fff;
+  width: 30%;
+  padding: 0px 3.2px;
+  border: 0.5px solid #cdd7d6;
+  z-index: 10;
+}
+
+.result {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  padding: 0.3em 0;
+  border-radius: 3px;
+  &:hover {
+    background-color: #cdd7d6;
+    cursor: pointer;
+  }
+}
+
+.item1 {
+  width: 30%;
+}
+
+.item2 {
+  width: 50%;
+}
+
 .option {
   width: 10%;
   display: flex;
@@ -188,10 +268,13 @@ nav {
   .container > li {
     flex-basis: 50%;
   }
+  .options-search {
+    width: 50%;
+    padding: 0px 2px;
+  }
   .search {
     order: 1;
     margin: 1em 0;
-    
   }
   .option {
     justify-content: center;
@@ -205,6 +288,10 @@ nav {
   }
   .option {
     order: 1;
+  }
+  .options-search {
+    width: 90%;
+    padding: 0;
   }
   .search {
     margin: 1em 1em;

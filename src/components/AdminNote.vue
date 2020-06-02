@@ -12,12 +12,10 @@
         ></textarea>
       </div>
       <div>
-        <select v-model="admin_state" name="state">
-          <option value="state" disabled>State...</option>
+        <select v-model="admin_state" name="state" class="custom-select" v-on:focus="edit = true">
           <option value="to do">To do</option>
           <option value="in process">In process</option>
           <option value="done">Done</option>
-          <option value="note">Note</option>
         </select>
       </div>
       <div>
@@ -76,7 +74,7 @@ export default {
       this.admin_title = "Title here...";
       this.admin_content = "Content here...";
       this.groupName = this.group;
-      this.admin_state = "state";
+      this.admin_state = "to do";
     } else {
       this.admin_id = this.id;
       this.admin_title = this.title;
@@ -153,7 +151,15 @@ export default {
   align-items: center;
 }
 
-.admin-title select {
+.custom-select {
+  position: relative;
+  font-family: "Rubik", sans-serif;
+}
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+.select-selected {
+  background-color: DodgerBlue;
 }
 
 .admin-content {
