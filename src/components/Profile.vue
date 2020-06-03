@@ -38,56 +38,59 @@
         </div>
       </div>
       <form action method="put" @submit.prevent="sendInfo()">
-        <div class="form">
-          <div class="labels">
-            <label class="form-label" for="#email">Email</label>
-            <label class="form-label" for="#name">Name</label>
-            <label class="form-label" for="#lastname">Lastname</label>
-            <label class="form-label" for="#phone">Phone</label>
-            <label class="form-label" for="#category">Category</label>
-          </div>
-          <div class="inputs">
-            <input class="form-input" id="email" v-bind:placeholder="email" disabled />
-            <input
-              class="form-input"
-              type="text"
-              id="name"
-              v-model="name"
-              :v-bind:placeholder="name"
-              :disabled="!editMode"
-              @focus="edited = true"
-            />
-            <input
-              class="form-input"
-              type="text"
-              id="lastname"
-              v-model="lastname"
-              :v-bind:placeholder="lastname"
-              :disabled="!editMode"
-              @focus="edited = true"
-            />
-            <input
-              class="form-input"
-              type="tel"
-              id="phone"
-              v-model="phone"
-              :v-bind:placeholder="phone"
-              :disabled="!editMode"
-              @focus="edited = true"
-            />
-            <input
-              class="form-input"
-              type="text"
-              id="category"
-              v-model="category"
-              :v-bind:placeholder="category"
-              :disabled="!editMode"
-              @focus="edited = true"
-            />
-          </div>
+        <div>
+          <label class="form-label" for="#email">Email</label>
+          <input class="form-input" id="email" v-bind:placeholder="email" disabled />
+        </div>
+        <div>
+          <label class="form-label" for="#name">Name</label>
+          <input
+            class="form-input"
+            type="text"
+            id="name"
+            v-model="name"
+            :v-bind:placeholder="name"
+            :disabled="!editMode"
+            @focus="edited = true"
+          />
+        </div>
+        <div>
+          <label class="form-label" for="#lastname">Lastname</label>
+          <input
+            class="form-input"
+            type="text"
+            id="lastname"
+            v-model="lastname"
+            :v-bind:placeholder="lastname"
+            :disabled="!editMode"
+            @focus="edited = true"
+          />
+        </div>
+        <div>
+          <label class="form-label" for="#phone">Phone</label>
+          <input
+            class="form-input"
+            type="tel"
+            id="phone"
+            v-model="phone"
+            :v-bind:placeholder="phone"
+            :disabled="!editMode"
+            @focus="edited = true"
+          />
+        </div>
+        <div>
+          <label class="form-label" for="#category">Category</label>
+          <input
+            class="form-input"
+            type="text"
+            id="category"
+            v-model="category"
+            :v-bind:placeholder="category"
+            :disabled="!editMode"
+            @focus="edited = true"
+          />
         </div>
       </form>
-      <p v-if="error" class="error">Se ha produciodo un error, intente lo de nuevo más tarde.</p>
     </div>
   </div>
 </template>
@@ -149,32 +152,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .container-profile {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
+  margin:1em 0;
 }
+
 .title {
   text-align: center;
   color: #102542;
 }
-.form {
-  margin: 3rem auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 20%;
-  min-width: 350px;
-  max-width: 100%;
-}
-.labels {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  color: #102542;
-}
+
+
 .form-header {
   width: 100%;
   display: flex;
@@ -187,22 +180,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
-
 }
 
 .icons img {
   margin: 0 5px;
 }
 
+form{
+  width: 100%;
+}
+
 .form-label {
   padding: 10px;
   margin: 5px;
+  width: 100%;
   color: #102542;
   font-weight: bold;
   &:first-of-type {
     margin-top: 0rem;
   }
 }
+
 .form-input {
   padding: 10px;
   margin: 5px;
