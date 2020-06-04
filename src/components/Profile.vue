@@ -136,8 +136,7 @@ export default {
             this.phone,
             this.category
           )
-          .then(response => {
-            console.log(response);
+          .then(() => {
             this.$emit("exit");
           })
           .catch(error => {

@@ -60,6 +60,9 @@
     <modal name="nota@" height="auto" :adaptive="'adaptive'">
       <com-adminNote v-bind:new="true" :group="groupName" @exit="hide('nota@')" />
     </modal>
+    <modal name="modalFeedback" height="auto" :adaptive="'adaptive'">
+      <com-feedback v-bind:message="msgFeedback" @exit="hide('modalFeedback')"/>
+    </modal>
   </div>
 </template>
 
@@ -67,6 +70,7 @@
 import api from "@/api";
 import SideBar from "@/components/Sidebar";
 import adminNote from "@/components/AdminNote";
+import feedback from "@/components/Feedback";
 import note from "@/components/Note";
 import bus from "@/bus";
 export default {
@@ -79,18 +83,26 @@ export default {
     process: [],
     done: [],
     note: [],
-    groupName: null
+    groupName: null,
+    msgFeedback: ""
   }),
   components: {
     sidebar: SideBar,
     "com-note": note,
-    "com-adminNote": adminNote
+    "com-adminNote": adminNote,
+    "com-feedback": feedback
   },
   props: {
     msg: String
   },
   mounted() {
     this.loged = true;
+
+    bus.$on("feedback", msg => {
+      this.msgFeedback = msg;
+      this.show("modalFeedback");
+    });
+
     bus.$on("admin-note", () => {
       this.show("hola");
       console.log("VECES");

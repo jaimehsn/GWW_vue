@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "querystring"
-
-const ENDPOINT_PATH = "https://localhost:9000/api/";
+import bus from "@/bus"
+const ENDPOINT_PATH = "https://localhost:80/api/";
 
 export default {
 
@@ -10,10 +10,12 @@ export default {
         console.log(ENDPOINT_PATH)
         return axios.get(ENDPOINT_PATH + "users/" + email)
             .then((response) => {
-                console.log("Response from API Rest USER INFO: OK ")
+                console.log("Response from API Rest USER INFO: OK :")
+                //bus.$emit("feedback", )
                 return response.data
             }).catch((error) => {
                 console.log("ERROR USERINFO:", error.response.message)
+                bus.$emit("feedback", error.response.message)
                 return error.response.message
             });
     },
@@ -27,7 +29,11 @@ export default {
             category
         })
         return axios.put(ENDPOINT_PATH + "users/" + email, user,
-        );
+        ).then(() =>{
+            bus.$emit("feedback", 'Updated profile.')
+        }).catch(() =>{
+            bus.$emit("feedback", "Update error.")
+        });
     },
 
     findAllNotes(group, token) {
@@ -67,9 +73,11 @@ export default {
         })
             .then((response) => {
                 console.log("ExitGroup: OK")
+                bus.$emit("feedback", 'Successful exit.')
                 return response.status
             }).catch((error) => {
                 console.log("ERROR EXITGROUP:", error.response.message)
+                bus.$emit("feedback", 'An error occurred while exiting.')
                 return error.response.message
             });
     },
@@ -98,9 +106,11 @@ export default {
         })
             .then((response) => {
                 console.log("DELETE GROUP: OK")
+                bus.$emit("feedback", 'Completely removed.')
                 return response.status
             }).catch((error) => {
                 console.log("ERROR DELETEAGROUP:", error.response.message)
+                bus.$emit("feedback", 'Delete error.')
                 return error.response.message
             });
     },
@@ -180,9 +190,11 @@ export default {
         return axios.delete(ENDPOINT_PATH + "notes/delOnes/" + id)
             .then((response) => {
                 console.log("Response from API Rest DELETE NOTE : OK")
+                bus.$emit("feedback", 'Completely removed.')
                 return response.data
             }).catch((error) => {
                 console.log("ERROR DELETENOTE:", error.response.message)
+                bus.$emit("feedback", 'Delete error.')
                 return error.response.message
             });
     }
