@@ -42,7 +42,7 @@
           v-on:click="acction(),$emit('exit')"
         />
       </div>
-      <div>
+      <div v-if="!this.new">
         <img
           src="@/assets/svgs/trash-alt.svg"
           alt="trash"

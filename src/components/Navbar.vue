@@ -56,6 +56,12 @@
             height="25px"
           />
           <img
+            src="@/assets/svgs/info-circle.svg"
+            v-on:click="openPdf()"
+            alt="Menu"
+            height="25px"
+          />
+          <img
             v-if="loged"
             v-on:click="show('choice-modal')"
             src="@/assets/svgs/sign-out-alt.svg"
@@ -118,19 +124,23 @@ export default {
     bus.$on("takeNotes", criteria => {
       this.arrayNotes = criteria;
     });
+
     bus.$on("showNotes", criteria => {
       if (criteria != null) {
         this.groupName = criteria;
       }
     });
+
     bus.$on("login", criteria => {
       this.loged = criteria;
     });
+
     bus.$on("logout", criteria => {
       if (criteria) {
         this.logout();
       }
     });
+
     if (this.$session.get("token")) {
       this.loged = true;
     }
@@ -141,27 +151,38 @@ export default {
       this.$router.push("/login");
       bus.$emit("login", false);
     },
+
     show(modal_name) {
       this.$modal.show(modal_name);
     },
+
     hide(modal_name) {
       this.$modal.hide(modal_name);
     },
+
     sidebar() {
       if (this.loged) {
         bus.$emit("sidebar");
       }
     },
+
     transmitSize() {
       console.log("RESIZE:", window.outerWidth);
     },
+
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
+
     async unfocus() {
       await this.sleep(100);
       this.search = "";
+    },
+    
+    openPdf(){
+      window.open("./Ayuda.pdf", "_blank")
     }
+    
   },
   computed: {
     filteredList() {
