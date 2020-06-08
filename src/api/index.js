@@ -127,6 +127,7 @@ export default {
                 return response.status
             }).catch((error) => {
                 console.log("ERROR ADDUSER:", error.response.message)
+                bus.$emit("feedback", 'Insert user error.')
                 return error.response.message
             });
     },
