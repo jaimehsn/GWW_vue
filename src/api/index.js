@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "querystring"
 import bus from "@/bus"
-const ENDPOINT_PATH = "https://localhost:80/api/";
+const ENDPOINT_PATH = "https://localhost/api/";
 
 export default {
 
@@ -29,9 +29,9 @@ export default {
             category
         })
         return axios.put(ENDPOINT_PATH + "users/" + email, user,
-        ).then(() =>{
+        ).then(() => {
             bus.$emit("feedback", 'Updated profile.')
-        }).catch(() =>{
+        }).catch(() => {
             bus.$emit("feedback", "Update error.")
         });
     },
@@ -161,6 +161,7 @@ export default {
         return axios.post(ENDPOINT_PATH + "notes", datas)
             .then((response) => {
                 console.log("Response from API Rest CREATE NOTE : OK")
+                //socket emiter
                 return response.data
             }).catch((error) => {
                 console.log("ERROR CREATENOTE:", error.response.message)
@@ -186,11 +187,11 @@ export default {
             });
     },
 
-    deleteNote(id, token){
+    deleteNote(id, token) {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.delete(ENDPOINT_PATH + "notes/delOnes/" + id)
             .then((response) => {
-                console.log("Response from API Rest DELETE NOTE : OK")
+                console.log("Response from API Rest DELETE NOTE : OK", response.data)
                 bus.$emit("feedback", 'Completely removed.')
                 return response.data
             }).catch((error) => {

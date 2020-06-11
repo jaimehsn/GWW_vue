@@ -21,7 +21,7 @@
               class="result"
               v-for="note in filteredList"
               :key="note.id"
-              @click="show('nota@'+note.title), searchFocus = false"
+              @click="show('nota@'+note.id), searchFocus = false"
             >
               <div class="item1">
                 <img

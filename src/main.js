@@ -4,6 +4,11 @@ import router from './router'
 import session from 'vue-session'
 import VueJwtDecode from 'vue-jwt-decode'
 import modal from 'vue-js-modal'
+import io from 'socket.io-client'
+import VueSocketIOExt from 'vue-socket.io-extended'
+
+const socket = io('https://localhost');
+Vue.use(VueSocketIOExt, socket);
 
 Vue.config.productionTip = false
 Vue.use(VueJwtDecode)

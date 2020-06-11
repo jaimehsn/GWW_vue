@@ -2,7 +2,12 @@
   <div class="container">
     <sidebar v-if="loged" />
     <div class="add-note-button">
-      <img src="@/assets/svgs/plus-circle-notes.svg" alt height="50px" v-on:click="show('nota@')" />
+      <img
+        src="@/assets/svgs/plus-circle-notes.svg"
+        alt
+        height="50px"
+        v-on:click="show('nota@')"
+      />
     </div>
     <div class="state">
       <div class="todo">
@@ -61,7 +66,7 @@
       <com-adminNote v-bind:new="true" :group="groupName" @exit="hide('nota@')" />
     </modal>
     <modal name="modalFeedback" height="auto" :adaptive="'adaptive'">
-      <com-feedback v-bind:message="msgFeedback" @exit="hide('modalFeedback')"/>
+      <com-feedback v-bind:message="msgFeedback" @exit="hide('modalFeedback')" />
     </modal>
   </div>
 </template>
@@ -83,7 +88,8 @@ export default {
     process: [],
     done: [],
     note: [],
-    groupName: null,
+    groupName: "",
+    groupNameOld: "",
     msgFeedback: ""
   }),
   components: {
@@ -109,6 +115,11 @@ export default {
     });
 
     bus.$on("showNotes", criteria => {
+      //socket Unsubscription
+      /*if (this.groupNameOld != "" && this.groupNameOld != criteria) {
+        this.$socket.client.off(this.groupNameOld);
+          console.log("DES SUBSCRITO")
+      }*/
       if (criteria != null) {
         this.notes = [];
         this.todo = [];
@@ -117,6 +128,17 @@ export default {
         this.note = [];
         this.notes = this.getNotes(criteria);
         this.groupName = criteria;
+        //socket subscription
+        if (criteria != this.groupNameOld) {
+          this.$socket.client.off(this.groupNameOld);
+          console.log("DES SUBSCRITO")
+          this.$socket.client.on(criteria, payload => {
+            console.log("HOLA SOY EL MENSAJE DE UN EVENTO SOCKET:", payload.group);
+            bus.$emit("showNotes", this.groupName);
+          });
+          console.log("SUBSCRITO")
+        }
+        this.groupNameOld = criteria;
       }
     });
 
@@ -163,7 +185,8 @@ export default {
 
     hide(modal_name) {
       this.$modal.hide(modal_name);
-    }
+    },
+    
   }
 };
 </script>

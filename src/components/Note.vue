@@ -1,19 +1,20 @@
 <template >
-  <div @click="show('nota@'+title)">
+  <div @click="show('nota@'+id)">
     <div class="note" v-bind:style="'transform: rotate(' + defineDeg()+'deg);'">
       <p class="title">{{nameComp(this.title, 13)}}</p>
       <div class="vl"></div>
       <p class="content">{{nameComp(this.content, 60)}}</p>
     </div>
-    <modal v-bind:name="'nota@' + this.title" height="auto" :adaptive="'adaptive'">
+    <modal v-bind:name="'nota@' + this.id" height="auto" :adaptive="'adaptive'">
       <admin-note
         v-bind:title="this.title"
         :content="this.content"
         :state="this.state"
         :autor="this.autor"
+        :new="false"
         :id="this.id"
         :group="groupName"
-        @exit="hide('nota@' + title)"
+        @exit="hide('nota@' + id)"
       />
     </modal>
   </div>
