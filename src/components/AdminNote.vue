@@ -43,7 +43,7 @@
         />
       </div>
       <div v-if="!this.new">
-        <img src="@/assets/svgs/trash-alt.svg" alt="trash" height="35px" v-on:click="trash()" />
+        <img src="@/assets/svgs/trash-alt.svg" alt="trash" height="35px" v-on:click="show('choice-delete-note')" />
       </div>
     </div>
     <div class="admin-info" v-if="!this.new">
@@ -51,15 +51,26 @@
         <small>Create by: {{this.autor}}</small>
       </div>
     </div>
+    <modal name="choice-delete-note" height="auto" :adaptive="'adaptive'" :scrollable="true">
+      <com-choice
+        @exit="hide('choice-delete-note')"
+        message="Delete note?"
+        event="deteleNote"
+      />
+    </modal>
   </div>
 </template>
 
 <script>
 import api from "@/api";
+import bus from "@/bus";
+import Choice from "@/components/Choice";
 export default {
   props: ["title", "content", "state", "new", "id", "autor", "group"],
 
-  components: {},
+  components: {
+    "com-choice":Choice,
+  },
 
   data: () => ({
     admin_title: null,
@@ -71,6 +82,11 @@ export default {
   }),
 
   mounted() {
+
+    bus.$on("deteleNote", () => {
+      this.trash();
+    });
+
     if (this.new) {
       this.admin_title = "Title here...";
       this.admin_content = "Content here...";

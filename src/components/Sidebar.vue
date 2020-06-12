@@ -155,7 +155,7 @@ export default {
     this.getGroups()
     .then(()=>{
       bus.$emit("showNotes", this.groups[0].groupModel.name)
-      console.log("EMISION DEL EVENTO AL BUS DE EVENTOS PARA shownotes.")
+      bus.$emit("placeSerchBar", this.groups[0].groupModel.name)
     })
     .catch(err=>{
       console.log("GET GROUPS ERROR:" , err)

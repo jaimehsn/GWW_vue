@@ -109,17 +109,11 @@ export default {
       this.show("hola");
       console.log("VECES");
     });
-
     bus.$on("showNotes", criteria => {
       //socket Unsubscription
       this.unSubscribe(criteria);
 
       if (criteria != null) {
-        this.notes = [];
-        this.todo = [];
-        this.done = [];
-        this.process = [];
-        this.note = [];
         this.getNotes(criteria);
         this.groupName = criteria;
         //socket subscription
@@ -148,8 +142,12 @@ export default {
     },
 
     sorter(data) {
+      this.notes = [];
+        this.todo = [];
+        this.done = [];
+        this.process = [];
+        this.note = [];
       data.forEach(valor => {
-        this.toda = [];
         switch (valor.state) {
           case "to do":
             this.todo.push(valor);

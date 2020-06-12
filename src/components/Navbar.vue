@@ -125,7 +125,7 @@ export default {
       this.arrayNotes = criteria;
     });
 
-    bus.$on("showNotes", criteria => {
+    bus.$on("placeSerchBar", criteria => {
       if (criteria != null) {
         this.groupName = criteria;
       }
@@ -152,6 +152,7 @@ export default {
       bus.$off("showNotes")
       bus.$off("admin-note")
       bus.$off("feedback")
+      location.reload();
       bus.$emit("login", false);
     },
 

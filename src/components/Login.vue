@@ -54,7 +54,8 @@ export default {
             this.error = false;
           }
           this.$session.set("token", response.data.token);
-          bus.$emit("login", true)
+          bus.$emit("login", true);
+          bus.$off("showNotes");
           this.$router.push("/");
         })
         .catch((error) => {
