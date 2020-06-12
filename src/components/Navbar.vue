@@ -149,6 +149,9 @@ export default {
     logout() {
       this.$session.remove("token");
       this.$router.push("/login");
+      bus.$off("showNotes")
+      bus.$off("admin-note")
+      bus.$off("feedback")
       bus.$emit("login", false);
     },
 

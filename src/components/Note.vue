@@ -32,7 +32,7 @@ export default {
   data: () => ({}),
 
   mounted() {
-    console.log("GRUPO: " ,this.groupName)
+    console.log("GRUPO: " ,this.groupName, " NOTA: ", this.id)
   },
 
   methods: {
