@@ -3,7 +3,7 @@ import qs from "querystring"
 axios.defaults.headers.common['Authorization'] = "AUTH_TOKEN";
 
 
-const ENDPOINT_PATH = "https://3.128.24.34:8443/api/";
+const ENDPOINT_PATH = "https://ec2-13-59-126-158.us-east-2.compute.amazonaws.com:8443/api/";
 
 export default {
     register(email, password) {
