@@ -19,7 +19,7 @@
         <div class="list" v-else v-for="group in groups" :key="group.id">
           <div class="group-name">
             <a
-              v-on:click="emiter('showNotes', group.groupModel.name),depliegue()"
+              v-on:click="emiter('placeSerchBar', group.groupModel.name),emiter('showNotes', group.groupModel.name),depliegue()"
             >{{nameComp(group.groupModel.name)}}</a>
           </div>
           <div class="group-options">

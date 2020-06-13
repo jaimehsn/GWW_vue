@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <sidebar v-if="loged" />
-    <div class="add-note-button">
+    <div class="add-note-button" v-if="groupName != ''">
       <img src="@/assets/svgs/plus-circle-notes.svg" alt height="50px" v-on:click="show('nota@')" />
     </div>
     <div class="state">
