@@ -6,7 +6,7 @@ var fs = require('fs')
 var https = require('https')
 var app = express();
 app.use(serveStatic(__dirname + "/dist"));
-var port = process.env.PORT || 8443;
+var port = process.env.PORT || 80;
 https.createServer({
     key: fs.readFileSync('./ssl/key.pem'),
     cert: fs.readFileSync('./ssl/cert.pem'),
