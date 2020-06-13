@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "querystring"
 import bus from "@/bus"
-const ENDPOINT_PATH = "https://localhost/api/";
+const ENDPOINT_PATH =  process.env.VUE_APP_API_URL || "https://localhost/api";
 
 export default {
 
