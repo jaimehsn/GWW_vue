@@ -23,6 +23,7 @@ export default {
     element: ""
   }),
   methods: {
+    //method that emits an event to the data bus.
     action(res) {
       if (res) {
         bus.$emit(this.event, this.element);

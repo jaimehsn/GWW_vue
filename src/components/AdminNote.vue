@@ -82,11 +82,11 @@ export default {
   }),
 
   mounted() {
-
+    //Subscribes to a data bus event
     bus.$on("deteleNote", () => {
       this.trash();
     });
-
+    //depending on the value of the variable configure the variables
     if (this.new) {
       this.admin_title = "Title here...";
       this.admin_content = "Content here...";
@@ -102,6 +102,7 @@ export default {
   },
 
   methods: {
+    //Asynchronous function to create notes.
     async acction() {
       if (this.new) {
         console.log("CREACION");
@@ -115,7 +116,7 @@ export default {
             this.$session.get("token")
           )
           .then(() => {
-            //bus.$emit("showNotes", this.groupName);
+            //Send a command to the API socket
             this.$socket.client.emit("update-note", {
                     group: this.groupName
             });
@@ -135,7 +136,7 @@ export default {
             this.$session.get("token")
           )
           .then(() => {
-            //bus.$emit("showNotes", this.groupName);
+            //Send a command to the API socket
             this.$socket.client.emit("update-note", {
                     group: this.groupName
             });
@@ -145,13 +146,13 @@ export default {
           });
       }
     },
-
+    //Function to delete a note
     async trash() {
       console.log("Eliminación");
       await api
         .deleteNote(this.admin_id, this.$session.get("token"))
         .then(data => {
-          //bus.$emit("showNotes", this.groupName);
+          //Send a command to the API socket
           this.$socket.client.emit("update-note", {
                     group: this.groupName
             });
@@ -162,6 +163,7 @@ export default {
         });
     },
 
+    //Control methods for modal windows
     show(modal_name) {
       this.$modal.show(modal_name);
     },

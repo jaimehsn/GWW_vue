@@ -36,6 +36,7 @@ export default {
   },
 
   methods: {
+    //Function that shortens the text if it exceeds a certain number of characters
     nameComp(name, num) {
       if (name.length >= num) {
         return name.substring(0, num) + "...";
@@ -43,13 +44,15 @@ export default {
         return name;
       }
     },
+    //Function that randomly defines the inclination of each note
     defineDeg() {
       return Math.random() * (2 - -2 + 1) + -2;
     },
-
+    //Function that emits a certain event to the event bus
     emiter() {
       bus.$emit("admin-note");
     },
+    //Functions that control the display of modal windows
     show(modal_name) {
       this.$modal.show(modal_name);
     },

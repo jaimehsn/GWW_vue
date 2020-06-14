@@ -19,6 +19,7 @@ import bus from "@/bus";
 export default {
   props: ["message", "event"],
   methods: {
+    //Method that executes a broadcast to the event bus
     result(res) {
       if (res) {
         bus.$emit(this.event, true);

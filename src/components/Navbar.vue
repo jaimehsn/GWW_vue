@@ -121,31 +121,33 @@ export default {
     searchFocus: false
   }),
   mounted() {
+    //Subscribes to an event bus event
     bus.$on("takeNotes", criteria => {
       this.arrayNotes = criteria;
     });
-
+    //Subscribes to an event bus event
     bus.$on("placeSerchBar", criteria => {
       if (criteria != null) {
         this.groupName = criteria;
       }
     });
-
+    //Subscribes to an event bus event
     bus.$on("login", criteria => {
       this.loged = criteria;
     });
-
+    //Subscribes to an event bus event
     bus.$on("logout", criteria => {
       if (criteria) {
         this.logout();
       }
     });
-
+    //Change the state of the variable if the authentication token exists
     if (this.$session.get("token")) {
       this.loged = true;
     }
   },
   methods: {
+    //Function that closes the application session and redirects you to the login
     logout() {
       this.$session.remove("token");
       this.$router.push("/login");
@@ -155,7 +157,7 @@ export default {
       location.reload();
       bus.$emit("login", false);
     },
-
+    //Functions that control modal windows
     show(modal_name) {
       this.$modal.show(modal_name);
     },
@@ -163,7 +165,7 @@ export default {
     hide(modal_name) {
       this.$modal.hide(modal_name);
     },
-
+    //Function that controls the display of the side menu
     sidebar() {
       if (this.loged) {
         bus.$emit("sidebar");
@@ -173,22 +175,23 @@ export default {
     transmitSize() {
       console.log("RESIZE:", window.outerWidth);
     },
-
+    //Delay function
     sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
-
+    //Asynchronous function that controls the focus of the search bar
     async unfocus() {
       await this.sleep(100);
       this.search = "";
     },
-    
+    //Function that opens a new tab with the user manual in PDF
     openPdf(){
       window.open("./Ayuda.pdf", "_blank")
     }
     
   },
   computed: {
+    //Function for filter of note search bar
     filteredList() {
       if (this.search != "") {
         return this.arrayNotes.filter(note => {

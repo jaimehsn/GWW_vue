@@ -4,7 +4,7 @@ import bus from "@/bus"
 const ENDPOINT_PATH = "https://ec2-13-59-126-158.us-east-2.compute.amazonaws.com:8443/api/";
 
 export default {
-
+    //Extra user information
     userInfo(email, token) {
         axios.defaults.headers.common['Authorization'] = token;
         console.log(ENDPOINT_PATH)
@@ -19,7 +19,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //Update user information
     updateInfo(email, token, name, lastname, phone, category) {
         axios.defaults.headers.common['Authorization'] = token;
         const user = qs.stringify({
@@ -35,7 +35,7 @@ export default {
             bus.$emit("feedback", "Update error.")
         });
     },
-
+    //Extract the notes of a certain group
     findAllNotes(group, token) {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.get(ENDPOINT_PATH + "notes/" + group)
@@ -48,7 +48,7 @@ export default {
             });
 
     },
-
+    //Extract the groups to which a user belongs
     findAllGroups(email, token) {
         axios.defaults.headers.common['Authorization'] = token;
 
@@ -62,7 +62,7 @@ export default {
             });
 
     },
-
+    //Function to remove a user from a group
     exitGroup(email, grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.delete(ENDPOINT_PATH + "del", {
@@ -81,7 +81,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //Function for creating groups
     createGroup(grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
@@ -96,7 +96,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //Function to delete a group
     deleteGroup(grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.delete(ENDPOINT_PATH + "groups", {
@@ -114,7 +114,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //Function to add a user to a group
     addUser(email, grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
@@ -131,7 +131,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //function that extracts the users that are in a group
     listUserGroup(grpName, token) {
         axios.defaults.headers.common['Authorization'] = token;
         console.log("NOMBRE DEL GRUPO: ", grpName)
@@ -148,7 +148,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //Note creation function
     createNote(title, content, state, grpName, autor, token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
@@ -161,14 +161,13 @@ export default {
         return axios.post(ENDPOINT_PATH + "notes", datas)
             .then((response) => {
                 console.log("Response from API Rest CREATE NOTE : OK")
-                //socket emiter
                 return response.data
             }).catch((error) => {
                 console.log("ERROR CREATENOTE:", error.response.message)
                 return error.response.message
             });
     },
-
+    //Function that updates the information of a note
     updateNote(id, title, content, state, autor, token) {
         axios.defaults.headers.common['Authorization'] = token;
         const datas = qs.stringify({
@@ -186,7 +185,7 @@ export default {
                 return error.response.message
             });
     },
-
+    //Function to delete a note
     deleteNote(id, token) {
         axios.defaults.headers.common['Authorization'] = token;
         return axios.delete(ENDPOINT_PATH + "notes/delOnes/" + id)

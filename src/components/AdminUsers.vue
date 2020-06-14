@@ -65,8 +65,9 @@ export default {
   }),
   mounted() {
     console.log("NOMBRE DEL GRUPO PARA LISTAR USAURIO: ", this.groupName);
+    //Gets the users of a group
     this.getUsers(this.groupName);
-
+    //Subscribe to the data bus event
     bus.$on("add-user", email => {
       if (this.groupName != undefined && email != "") {
         this.addUserIntoGroup(this.groupName, email)
@@ -78,7 +79,7 @@ export default {
           });
       }
     });
-
+    //Subscribe to the data bus event
     bus.$on("del-user-group", (email) =>{
       this.exitFromAGroup(this.groupName, email).then(() =>{
         this.getUsers(this.groupName)
@@ -88,15 +89,16 @@ export default {
     })
   },
   methods: {
+    //asynchronous method to add users to a group
     async addUserIntoGroup(group, email) {
       await api.addUser(email, group, this.$session.get("token"));
     },
-
+    //Gets the users of a group
     async getUsers(group) {
       this.users = await api.listUserGroup(group, this.$session.get("token"));
       console.log("***LIST USER OK***");
     },
-
+    //Remove a user from a group
     async exitFromAGroup(group, email) {
       await api.exitGroup(
         email,
@@ -104,7 +106,7 @@ export default {
         this.$session.get("token")
       );
     },
-
+    //Functions for the control of modal windows
     show(modal_name) {
       this.$modal.show(modal_name);
     },
@@ -112,7 +114,7 @@ export default {
     hide(modal_name) {
       this.$modal.hide(modal_name);
     },
-
+    //Function that executes broadcasts to the event bus
     emiter(event, criteria){
       bus.$emit(event, criteria)
     }

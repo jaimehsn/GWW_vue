@@ -65,6 +65,7 @@ export default {
     message: ""
   }),
   methods: {
+    //Function that executes the registration of a user
     async register() {
       if (this.password == this.passwordRepeat) {
         auth
@@ -90,6 +91,7 @@ export default {
         console.log(this.error);
       }
     },
+    //In the event that the registration is satisfactory, it will be automatically redirected to the workspace with the following function:
     emiter(permisos) {
       bus.$emit("login", permisos);
       this.$emit("exit");

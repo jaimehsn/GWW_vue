@@ -110,9 +110,11 @@ export default {
     phone: ""
   }),
   mounted() {
+    //Function that obtains user information
     this.getUserInfo();
   },
   methods: {
+    //Function that obtains user information
     async getUserInfo() {
       this.info = await api.userInfo(
         this.$jwtDec.decode(this.$session.get("token")).sub,
@@ -125,6 +127,7 @@ export default {
       this.phone = this.info[0].phone;
       this.category = this.info[0].category;
     },
+    //Function that sends updated user data
     async sendInfo() {
       if (this.edited) {
         api

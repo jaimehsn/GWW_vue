@@ -104,6 +104,7 @@ export default {
     target: null
   }),
   mounted() {
+    //Subscribes to an event bus event
     bus.$on("sidebar", () => {
       if (!this.sidebar) {
         document.getElementById("mySidenav").style.width = "300px";
@@ -113,7 +114,7 @@ export default {
         this.sidebar = false;
       }
     });
-
+    //Subscribes to an event bus event
     bus.$on("exit-group", () => {
       if (this.target != undefined) {
         this.exitFromAGroup(this.target)
@@ -125,6 +126,7 @@ export default {
           });
       }
     });
+    //Subscribes to an event bus event
     bus.$on("delete-group", () => {
       if (this.target != undefined) {
         this.deleteAGroup(this.target)
@@ -136,7 +138,7 @@ export default {
           });
       }
     });
-
+    //Subscribes to an event bus event
     bus.$on("add-group", grpName => {
       if (grpName != "") {
         this.createAGroup(grpName)
@@ -151,7 +153,7 @@ export default {
         console.log("GROUPO ERROR:", grpName);
       }
     });
-
+    //Execute the function with call back to get the list of groups
     this.getGroups()
     .then(()=>{
       bus.$emit("showNotes", this.groups[0].groupModel.name)
@@ -162,21 +164,22 @@ export default {
     });
   },
   methods: {
+    //Function that sends an event to the event bus
     depliegue() {
       bus.$emit("sidebar");
     },
-
+    //Function that sends an event to the event bus defined by parameters
     emiter(dir, nam) {
       bus.$emit(dir, nam);
     },
-
+    //Asynchronous function that gets groups from a user
     async getGroups() {
       this.groups = await api.findAllGroups(
         this.$jwtDec.decode(this.$session.get("token")).sub,
         this.$session.get("token")
       );
     },
-
+    //Function that allows you to leave a foreign group
     async exitFromAGroup(group) {
       await api.exitGroup(
         this.$jwtDec.decode(this.$session.get("token")).sub,
@@ -184,20 +187,20 @@ export default {
         this.$session.get("token")
       );
     },
-
+    //Function that allows creating a group
     async createAGroup(group) {
       await api.createGroup(group, this.$session.get("token"));
     },
-
+    //function that allows you to completely delete your own group
     async deleteAGroup(group) {
       await api.deleteGroup(group, this.$session.get("token"));
     },
-
+    //Function that changes the target group
     changeTarget(group) {
       this.target = group;
       console.log("CAMBIO DEL TARGET:", this.target);
     },
-
+    //Function that shortens the text depending on the number of characters defined
     nameComp(name) {
       if (name.length >= 15) {
         return name.substring(0, 9) + "...";
@@ -205,7 +208,7 @@ export default {
         return name;
       }
     },
-
+    //Function that controls the display of modal windows
     show(modal_name) {
       this.$modal.show(modal_name);
     },

@@ -99,16 +99,17 @@ export default {
   mounted() {
     this.loged = true;
 
-
+    //Subscribes to an event bus event
     bus.$on("feedback", msg => {
       this.msgFeedback = msg;
       this.show("modalFeedback");
     });
-
+    //Subscribes to an event bus event
     bus.$on("admin-note", () => {
       this.show("hola");
       console.log("VECES");
     });
+    //Subscribes to an event bus event
     bus.$on("showNotes", criteria => {
       //socket Unsubscription
       this.unSubscribe(criteria);
@@ -128,11 +129,13 @@ export default {
     }
   },
   methods: {
+    //Get the notes of a certain group
     async getNotes(group) {
       let data = await api.findAllNotes(group, this.$session.get("token"));
       bus.$emit("takeNotes", data[0].NotesModel);
       return this.sorter(data[0].NotesModel);
     },
+    //Function that shortens the text if it exceeds a certain amount of characters
     nameComp(name, num) {
       if (name.length >= num) {
         return name.substring(0, num) + "...";
@@ -140,7 +143,7 @@ export default {
         return name;
       }
     },
-
+    //Function that orders the notes according to the state
     sorter(data) {
       this.notes = [];
         this.todo = [];
@@ -164,14 +167,15 @@ export default {
         }
       });
     },
-
+    //Control functions of modal windows
     show(modal_name) {
       this.$modal.show(modal_name);
     },
-
+    //Control functions of modal windows
     hide(modal_name) {
       this.$modal.hide(modal_name);
     },
+    //Function that subscribes the component to an API socket
     subscribe(criteria) {
       if (criteria != this.groupNameOld || this.groupNameOld == "") {
         this.$socket.client.on(criteria, payload => {
@@ -180,6 +184,7 @@ export default {
         });
       }
     },
+    //Function that unsubscribes the component to an API socket
     unSubscribe(criteria) {
       if (this.groupNameOld != "" && this.groupNameOld != criteria) {
         this.$socket.client.off(this.groupNameOld);

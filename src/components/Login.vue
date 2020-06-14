@@ -40,11 +40,13 @@ export default {
     shoWmodal: false,
   }),
   mounted() {
+    //In the case that you try to access without the authentication token, you will be redirected to the login
     if (this.$session.get("token")) {
       this.$router.push("/");
     }
   },
   methods: {
+    //Asynchronous function that sends the login data to the API
     async login() {
       auth
         .login(this.email, this.password)
