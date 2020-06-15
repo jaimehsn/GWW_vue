@@ -150,7 +150,7 @@ export default {
     //Function that closes the application session and redirects you to the login
     logout() {
       this.$session.remove("token");
-      this.$router.push("/login");
+      this.$router.push("/");
       bus.$off("showNotes")
       bus.$off("admin-note")
       bus.$off("feedback")
