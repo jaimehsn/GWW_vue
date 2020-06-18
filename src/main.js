@@ -7,7 +7,7 @@ import modal from 'vue-js-modal'
 import io from 'socket.io-client'
 import VueSocketIOExt from 'vue-socket.io-extended'
 
-const socket = io('https://localhost');
+const socket = io('https://ec2-13-59-126-158.us-east-2.compute.amazonaws.com:8443');
 Vue.use(VueSocketIOExt, socket);
 
 Vue.config.productionTip = false
