@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "https": "^1.0.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "path": "^0.12.7",
     "querystring": "^0.2.0",
     "sass-loader": "^8.0.2",
